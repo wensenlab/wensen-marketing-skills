@@ -155,7 +155,7 @@ metadata:
 ## 7. 辅助参考资料索引 (Progressive Disclosure)
 
 - [`references/five-perspectives-guide.md`](references/five-perspectives-guide.md)：深入掌握 5 大破局视角与 SENSE/奥格威公式的结合；
-- [`references/platform-nuance-matrix.md`](references/platform-nuance-matrix.md)：多平台算法偏好、小红书双层抓手与互动问答设计；
+- [`references/platform-nuance-matrix.md`](references/platform-nuance-matrix.md)：多平台算法偏好、小红书双层开篇钩子与互动问答设计；
 - [`references/redlines-and-anti-patterns.md`](references/redlines-and-anti-patterns.md)：权威负面词典、旧标题诊断演练与四大真实场景 Bad vs Good 深度对照。
 
 ---
