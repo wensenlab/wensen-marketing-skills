@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "repo": "wensenlab/wensen-marketing-skills",
   "source_root": "/Users/leixiao/.skills-manager/skills",
-  "updated_at": "2026-10-24T21:21:48.089975",
+  "updated_at": "2026-10-24T21:25:29.996940",
   "skills": [
     {
       "name": "brand-strategy-analyst",
@@ -43,6 +43,12 @@
     {
       "name": "pitch-deck-storyteller",
       "category": "比稿提案与讲稿",
+      "status": "active",
+      "added_at": "2026-10-24"
+    },
+    {
+      "name": "brand-story-miner",
+      "category": "品牌故事与叙事",
       "status": "active",
       "added_at": "2026-10-24"
     }
