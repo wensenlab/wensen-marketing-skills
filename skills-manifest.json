@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "repo": "wensenlab/wensen-marketing-skills",
   "source_root": "/Users/leixiao/.skills-manager/skills",
-  "updated_at": "2026-10-24T21:35:31.708037",
+  "updated_at": "2026-10-24T21:46:21.807920",
   "skills": [
     {
       "name": "brand-strategy-analyst",
@@ -61,6 +61,12 @@
     {
       "name": "competitor-teardown-specialist",
       "category": "竞品攻防与反切",
+      "status": "active",
+      "added_at": "2026-10-24"
+    },
+    {
+      "name": "reverse-brief-translator",
+      "category": "需求反切与工作Brief",
       "status": "active",
       "added_at": "2026-10-24"
     }
