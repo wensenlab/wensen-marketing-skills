@@ -37,7 +37,7 @@
 
 ---
 
-## 二、四大商业破局反切实战打法 (The 4 Counter-Positioning Moves)
+## 二、四大商业破局反切实战战法 (The 4 Counter-Positioning Moves)
 
 在比稿与营销战役中，最有效的反切战术分为以下四大流派：
 
