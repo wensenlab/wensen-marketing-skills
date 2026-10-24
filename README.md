@@ -11,6 +11,8 @@
 
 | 技能目录 | 技能定位与核心价值 | 适用场景与触发词 | 版本 | 状态 |
 | :--- | :--- | :--- | :--- | :--- |
+| [`skills/brand-strategy-analyst`](skills/brand-strategy-analyst/) | **品牌策略**<br/>资深品牌策略分析师与商业洞察中枢（Senior Brand Strategy Analyst），由 WenSenLab · 文森策打造。深度融合文森策十余年 4A 整合营销战略咨询实战内功与飞书《轻松玩转 AIGC》工业级方法论体系（涵盖《营销策划方法论... | 详见技能定义说明 | `v1.0.0` | ✅ 已就绪 |
+| [`skills/creative-hook-generator`](skills/creative-hook-generator/) | **社媒爆点抓手**<br/>社媒爆点抓手与互动型文案发生器（Creative Hook & Headline Studio），由 WenSenLab · 文森策打造。当用户提到以下需求时必须主动触发：取标题、起标题、拟标题、写爆款标题、打磨标题、标题优化、标题诊断、社媒抓手（Hoo... | 详见技能定义说明 | `v1.0.0` | ✅ 已就绪 |
 | [`skills/social-card-maker`](skills/social-card-maker/) | **社媒金句卡片**<br/>营销人专属的审美级社媒卡片与金句交互工场（Interactive Quote & Insight Card Studio），由 WenSenLab · 文森策打造。采用 Generative UI 理念，当用户提供长文、散装手记、访谈观点或要求制作金句卡... | 详见技能定义说明 | `v1.0.0` | ✅ 已就绪 |
 
 ---
