@@ -2,7 +2,7 @@
 name: pitch-deck-storyteller
 description: "4A 级商业比稿提案大纲与逐页讲稿架构师（Senior Pitch Deck Storyteller & Presentation Strategist），由 WenSenLab · 文森策倾力打造。深度蒸馏文森策十余年数十场头部品牌比稿中标实战内功与飞书《轻松玩转 AIGC》工业级方法论（涵盖《根据策划方案参考提炼框架模板》、《PPT 逐页讲稿口播标准》与《赢单提案心理学》）。当用户提到以下需求时必须主动触发：撰写商业比稿提案大纲、整理 PPT 逻辑架构、为方案编写配套口播讲稿、策划提案演讲逐页脚本、梳理比稿叙事动线、把零散策略整理成 15-20 页 PPT 骨架、预判客户提问与防守对策、输入方案要求扮演‘4A 提案总监 / 资深叙事顾问’。严格遵循三模合一（Stage-Gate 叙事弧线对齐 ➔ PPT 直出级五要素逐页脚本 ➔ 可选单文件 HTML 提案提词器看板），直击商业赢单本质。"
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   author: WenSenLab · 文森策
 ---
 
@@ -30,6 +30,8 @@ metadata:
    - 讲稿必须具备**真实咖啡馆对话的松弛感与控场感**，标注语气重音与眼神交互停顿，杜绝机械背诵。
 4. **前置防守哲学 (Preemptive Objection Handling)**：
    - 最顶级的提案不是在 Q&A 环节被动辩解，而是在逐页推进中，预判客户此刻心里正在犯嘀咕的疑虑，并由讲者主动点破化解。
+
+*五幕赢单心智曲线、高频客户抗拒前置防守对策库与标题论断化转译详见参考文档：[`references/pitch-deck-defense-playbook.md`](references/pitch-deck-defense-playbook.md)*
 
 ---
 
@@ -86,6 +88,8 @@ metadata:
 - **提案主视觉基调**：[如：深邃冷白 / 极简主义 / 留白呼吸感]
 
 #### 标准逐页提案架构表
+
+*撰写时每页标题必须转译为行动论断句，讲者动作批注与前置防守策略详见参考文档：[`references/pitch-deck-defense-playbook.md`](references/pitch-deck-defense-playbook.md)*
 
 | 页码 & 类型 | 页面论断标题 (Slide Headline) | 版面核心视觉与排版焦点 (Visual Layout) | 提案人口播讲稿原文 (Presenter Script) | 客户潜在疑虑与防守应答 (Client Objection & Defense) |
 | :---: | :--- | :--- | :--- | :--- |
