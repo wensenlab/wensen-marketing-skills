@@ -9,9 +9,9 @@
 
 ## 📂 专区技能矩阵清单 (Skills Matrix)
 
-| 技能目录 | 技能定位与核心价值 | 适用场景与触发词 | 状态 |
-| :--- | :--- | :--- | :--- |
-| [`skills/brand-strategy-analyst`](skills/brand-strategy-analyst/) | **资深品牌策略分析师与商业洞察中枢**<br/>严格遵循 4A 战略咨询框架，从商业破局点（Category Tension）、人群心智切片（Deep Persona）、品牌定位四梁八柱到核心传播主张全链路贯通推演。 | 品牌定位分析、商业策略推演、竞品差异化诊断、品牌资产梳理、撰写比稿策略大纲、推导 Brand Positioning / Core Value / Brand Narrative。 | ✅ 已就绪 (v1.0.0) |
+| 技能目录 | 技能定位与核心价值 | 适用场景与触发词 | 版本 | 状态 |
+| :--- | :--- | :--- | :--- | :--- |
+| [`skills/brand-strategy-analyst`](skills/brand-strategy-analyst/) | **品牌策略**<br/>资深品牌策略分析师与商业洞察中枢（Senior Brand Strategy Analyst），由 WenSenLab · 文森策打造。当用户提到以下需求时必须主动触发：品牌定位分析、商业策略推演、竞品差异化诊断、品牌资产梳理、撰写比稿策略大纲、推导 B... | 详见技能定义说明 | `v1.0.0` | ✅ 已就绪 |
 
 ---
 

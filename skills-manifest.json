@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0",
+  "repo": "wensenlab/wensen-marketing-skills",
+  "source_root": "/Users/leixiao/.skills-manager/skills",
+  "updated_at": "2026-10-24T18:13:55.826851",
+  "skills": [
+    {
+      "name": "brand-strategy-analyst",
+      "category": "品牌策略",
+      "status": "active",
+      "added_at": "2026-10-24"
+    }
+  ]
+}
