@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "repo": "wensenlab/wensen-marketing-skills",
   "source_root": "/Users/leixiao/.skills-manager/skills",
-  "updated_at": "2026-10-24T21:25:29.996940",
+  "updated_at": "2026-10-24T21:29:23.290879",
   "skills": [
     {
       "name": "brand-strategy-analyst",
@@ -49,6 +49,12 @@
     {
       "name": "brand-story-miner",
       "category": "品牌故事与叙事",
+      "status": "active",
+      "added_at": "2026-10-24"
+    },
+    {
+      "name": "value-proposition-designer",
+      "category": "商业价值主张与PMF",
       "status": "active",
       "added_at": "2026-10-24"
     }

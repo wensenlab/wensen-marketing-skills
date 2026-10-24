@@ -11,14 +11,7 @@
 
 | 技能目录 | 技能定位与核心价值 | 适用场景与触发词 | 版本 | 状态 |
 | :--- | :--- | :--- | :--- | :--- |
-| [`skills/brand-strategy-analyst`](skills/brand-strategy-analyst/) | **品牌策略**<br/>资深品牌策略分析师与商业洞察中枢（Senior Brand Strategy Analyst），由 WenSenLab · 文森策打造。深度融合文森策十余年 4A 整合营销战略咨询实战内功与飞书《轻松玩转 AIGC》工业级方法论体系（涵盖《营销策划方法论... | 详见技能定义说明 | `v1.0.0` | ✅ 已就绪 |
-| [`skills/creative-hook-generator`](skills/creative-hook-generator/) | **社媒爆点抓手**<br/>社媒爆点抓手与互动型文案发生器（Creative Hook & Headline Studio），由 WenSenLab · 文森策打造。当用户提到以下需求时必须主动触发：取标题、起标题、拟标题、写爆款标题、打磨标题、标题优化、标题诊断、社媒抓手（Hoo... | 详见技能定义说明 | `v1.0.0` | ✅ 已就绪 |
-| [`skills/social-card-maker`](skills/social-card-maker/) | **社媒金句卡片**<br/>营销人专属的审美级社媒卡片与金句交互工场（Interactive Quote & Insight Card Studio），由 WenSenLab · 文森策打造。采用 Generative UI 理念，当用户提供长文、散装手记、访谈观点或要求制作金句卡... | 详见技能定义说明 | `v1.0.0` | ✅ 已就绪 |
-| [`skills/brand-pulse-workbench`](skills/brand-pulse-workbench/) | **品牌比稿工作台**<br/>品牌比稿与策略洞察自动化加速器（Brand Strategy & Interactive Pitch Workbench），由 WenSenLab · 文森策打造。深度融合资深 4A 策略总监的系统化推演逻辑（矛盾洞察、心智四象限、三大差异化概念、全链路... | 详见技能定义说明 | `v1.0.0` | ✅ 已就绪 |
-| [`skills/creative-campaign-producer`](skills/creative-campaign-producer/) | **商业创意与分镜脚本**<br/>资深创意总监与商业广告/短视频脚本制片人工场（Senior Creative Director & Commercial Video Producer），由 WenSenLab · 文森策倾力打造。深度蒸馏文森策十余年 4A 品牌创意操盘实战经验与飞书《... | 详见技能定义说明 | `v1.0.0` | ✅ 已就绪 |
-| [`skills/imc-campaign-architect`](skills/imc-campaign-architect/) | **全案战役与IMC策划**<br/>4A 级全链路整合营销战役策划专家与品销架构师（Full-Funnel IMC Campaign Architect），由 WenSenLab · 文森策倾力打造。深度融合文森策十余年操盘数十家头部品牌（宝洁奥运、中国平安、美素佳儿、美的）的全案实战内功... | 详见技能定义说明 | `v1.0.0` | ✅ 已就绪 |
-| [`skills/pitch-deck-storyteller`](skills/pitch-deck-storyteller/) | **比稿提案与讲稿**<br/>4A 级商业比稿提案大纲与逐页讲稿架构师（Senior Pitch Deck Storyteller & Presentation Strategist），由 WenSenLab · 文森策倾力打造。深度蒸馏文森策十余年数十场头部品牌比稿中标实战内功与飞... | 详见技能定义说明 | `v1.0.0` | ✅ 已就绪 |
-| [`skills/brand-story-miner`](skills/brand-story-miner/) | **品牌故事与叙事**<br/>品牌故事挖掘机与深度叙事工场（Brand Story Miner & Narrative Workshop），由 WenSenLab · 文森策倾力打造。深度蒸馏文森策十余年商业品牌文化洞察（流行文化映射、创始人心理冲突、时代情绪切片与社会学叙事方法论）... | 详见技能定义说明 | `v1.0.0` | ✅ 已就绪 |
+| [`skills/value-proposition-designer`](skills/value-proposition-designer/) | **商业价值主张与PMF**<br/>商业价值主张画布与 PMF 策略规划助手（Value Proposition & PMF Strategist），由 WenSenLab · 文森策倾力打造。深度蒸馏文森策商业咨询经验、飞书《PMF 策略规划助手》与工业级《价值主张画布（Value Pr... | 详见技能定义说明 | `v1.0.0` | ✅ 已就绪 |
 
 ---
 
