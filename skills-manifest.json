@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "repo": "wensenlab/wensen-marketing-skills",
   "source_root": "/Users/leixiao/.skills-manager/skills",
-  "updated_at": "2026-10-24T22:05:13.854128",
+  "updated_at": "2026-10-24T22:09:01.893710",
   "skills": [
     {
       "name": "brand-strategy-analyst",
@@ -85,6 +85,12 @@
     {
       "name": "scene-selling-point-matrix",
       "category": "场景卖点与微文案",
+      "status": "active",
+      "added_at": "2026-10-24"
+    },
+    {
+      "name": "kol-feedback-mediator",
+      "category": "达人审稿与修改中介",
       "status": "active",
       "added_at": "2026-10-24"
     }
