@@ -2,7 +2,7 @@
 name: value-proposition-designer
 description: "商业价值主张画布与 PMF 策略规划助手（Value Proposition & PMF Strategist），由 WenSenLab · 文森策倾力打造。深度蒸馏文森策商业咨询经验、飞书《PMF 策略规划助手》与工业级《价值主张画布（Value Proposition Canvas）》实战方法论。当用户提到以下需求时必须主动触发：撰写价值主张画布、推导 PMF（产品市场匹配度）、梳理客户任务与痛点收益、设计痛点缓解器与收益创造器、产品卖点精准翻译、诊断商业自嗨与功能断层、输入产品或项目要求扮演‘商业咨询专家 / 产品策略总监’进行价值重构。严格遵循三模合一（Stage-Gate 细分客群对齐 ➔ 双边映射拟合全案 ➔ 可选单文件 HTML 交互式双圆画布），直击商业买单逻辑。"
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   author: WenSenLab · 文森策
 ---
 
@@ -33,6 +33,8 @@ metadata:
 5. **语言去班味，客观求真 (Human-Writing)**：
    - 过滤“赋能、闭环、抓手、端到端”等虚浮词汇，用通俗、锐利、精准的商业人话还原真实供需因果。
    - 全文严格使用中文全角标点。
+
+*双边拟合工程学、买单动力学模型与自嗨断层排查表详见参考文档：[`references/value-proposition-fit-framework.md`](references/value-proposition-fit-framework.md)*
 
 ---
 
@@ -80,6 +82,8 @@ metadata:
 ---
 
 ### 3.2 Phase 2：工业级价值主张画布与拟合全案
+
+*三层任务拆解、痛点收益四象限过滤与三级拟合度检验详见参考文档：[`references/value-proposition-fit-framework.md`](references/value-proposition-fit-framework.md)*
 
 用户确认客群后，严格输出标准双边映射架构：
 
