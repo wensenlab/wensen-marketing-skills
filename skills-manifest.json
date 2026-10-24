@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "repo": "wensenlab/wensen-marketing-skills",
   "source_root": "/Users/leixiao/.skills-manager/skills",
-  "updated_at": "2026-10-25T00:10:57.544980",
+  "updated_at": "2026-10-25T00:12:23.099374",
   "skills": [
     {
       "name": "brand-strategy-analyst",
@@ -121,6 +121,12 @@
     {
       "name": "pr-crisis-responder",
       "category": "公关危机与舆情破局",
+      "status": "active",
+      "added_at": "2026-10-25"
+    },
+    {
+      "name": "live-promo-showrunner",
+      "category": "电商大促与直播制片",
       "status": "active",
       "added_at": "2026-10-25"
     }
