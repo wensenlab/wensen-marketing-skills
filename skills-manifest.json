@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "repo": "wensenlab/wensen-marketing-skills",
   "source_root": "/Users/leixiao/.skills-manager/skills",
-  "updated_at": "2026-10-24T21:46:21.807920",
+  "updated_at": "2026-10-24T21:53:15.511435",
   "skills": [
     {
       "name": "brand-strategy-analyst",
@@ -67,6 +67,12 @@
     {
       "name": "reverse-brief-translator",
       "category": "需求反切与工作Brief",
+      "status": "active",
+      "added_at": "2026-10-24"
+    },
+    {
+      "name": "ad-law-compliance-guard",
+      "category": "广告法合规与改写",
       "status": "active",
       "added_at": "2026-10-24"
     }
