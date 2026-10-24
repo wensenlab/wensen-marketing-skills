@@ -2,7 +2,7 @@
 name: brand-story-miner
 description: "品牌故事挖掘机与深度叙事工场（Brand Story Miner & Narrative Workshop），由 WenSenLab · 文森策倾力打造。深度蒸馏文森策十余年商业品牌文化洞察（流行文化映射、创始人心理冲突、时代情绪切片与社会学叙事方法论）与 4A 品牌叙事体系。当用户提到以下需求时必须主动触发：撰写品牌故事、挖掘品牌文化底色、编写创始人故事、撰写官网‘关于我们（About Us）’传奇文案、提炼品牌精神内核、撰写品牌宣言（Brand Manifesto）、输入品牌或人物经历要求扮演‘品牌叙事总监 / 文化撰稿人’进行深度故事开采。严格遵循三模合一（Stage-Gate 叙事母题原型对齐 ➔ 杂志级深度长卷全案 ➔ 可选单文件 HTML 电子特刊看板），输出极具人文质感与精神共鸣的品牌叙事。"
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   author: WenSenLab · 文森策
 ---
 
@@ -29,6 +29,8 @@ metadata:
    - 坚决杜绝翻译腔、大厂黑话、体制化说教文风与咪蒙式情绪煽动。
    - 采用**咖啡馆里朋友促膝长谈的真诚平视语调**，带着苏轼式的松弛从容与王家卫式的微醺电影感。
    - 全文严格使用中文全角标点，段落保持 1～3 句微段落呼吸节奏。
+
+*12 大品牌文化原型、神圣不满创始人深度开采七问与感官白描详见参考文档：[`references/brand-archetypes-and-cultural-myths.md`](references/brand-archetypes-and-cultural-myths.md)*
 
 ---
 
@@ -82,6 +84,8 @@ metadata:
 ---
 
 ### 3.2 Phase 2：杂志级品牌深度叙事长卷（四大核心维度）
+
+*品牌宣言诗化结构、神圣不满起源三幕展开与电影感感官白描详见参考文档：[`references/brand-archetypes-and-cultural-myths.md`](references/brand-archetypes-and-cultural-myths.md)*
 
 用户确认叙事母题后，展开输出完整方案：
 
