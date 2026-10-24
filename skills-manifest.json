@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "repo": "wensenlab/wensen-marketing-skills",
   "source_root": "/Users/leixiao/.skills-manager/skills",
-  "updated_at": "2026-10-25T00:09:12.265131",
+  "updated_at": "2026-10-25T00:10:57.544980",
   "skills": [
     {
       "name": "brand-strategy-analyst",
@@ -115,6 +115,12 @@
     {
       "name": "pop-up-stunt-producer",
       "category": "社交破圈与线下快闪",
+      "status": "active",
+      "added_at": "2026-10-25"
+    },
+    {
+      "name": "pr-crisis-responder",
+      "category": "公关危机与舆情破局",
       "status": "active",
       "added_at": "2026-10-25"
     }
