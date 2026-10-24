@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{PAGE_TITLE}} · 社媒金句交互工场 | WenSenLab</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- html2canvas for high-res lossless export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['-apple-system', 'BlinkMacSystemFont', '"PingFang SC"', '"Hiragino Sans GB"', '"Microsoft YaHei"', 'Roboto', 'sans-serif'],
+            serif: ['"Songti SC"', '"Noto Serif SC"', '"Source Han Serif SC"', 'Newsreader', 'Georgia', 'serif'],
+            mono: ['"JetBrains Mono"', 'Menlo', 'Monaco', 'Courier New', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* CSS Variables for 4 Aesthetic Themes */
+    :root {
+      /* Theme 1: 冷白知性 (Cold White) - Default */
+      --theme-white-bg: linear-gradient(145deg, #FFFFFF 0%, #F5F7FA 100%);
+      --theme-white-border: #E5E7EB;
+      --theme-white-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.08);
+      --theme-white-text-title: #0F172A;
+      --theme-white-text-body: #334155;
+      --theme-white-text-muted: #64748B;
+      --theme-white-accent: #2563EB;
+      --theme-white-accent-bg: #EFF6FF;
+      --theme-white-accent-border: #DBEAFE;
+      --theme-white-font: -apple-system, BlinkMacSystemFont, "PingFang SC", "Segoe UI", Roboto, sans-serif;
+      --theme-white-quote-mark: #CBD5E1;
+
+      /* Theme 2: 人文纸感 (Editorial Cream) */
+      --theme-cream-bg: #F7F4EE;
+      --theme-cream-border: #E8E2D5;
+      --theme-cream-shadow: 0 20px 40px -15px rgba(68, 56, 45, 0.09);
+      --theme-cream-text-title: #1C1917;
+      --theme-cream-text-body: #44403C;
+      --theme-cream-text-muted: #78716C;
+      --theme-cream-accent: #8C4A27;
+      --theme-cream-accent-bg: #EFE9DF;
+      --theme-cream-accent-border: #DFD7C9;
+      --theme-cream-font: "Songti SC", "Noto Serif SC", "Source Han Serif SC", Newsreader, Georgia, serif;
+      --theme-cream-quote-mark: #D7CEBE;
+
+      /* Theme 3: 马卡龙粉彩 (Macaron Pastel) */
+      --theme-macaron-bg: linear-gradient(150deg, #FCFBF9 0%, #F5F2EB 100%);
+      --theme-macaron-border: #EADBCE;
+      --theme-macaron-shadow: 0 20px 40px -15px rgba(180, 140, 120, 0.12);
+      --theme-macaron-text-title: #2D2A26;
+      --theme-macaron-text-body: #544F49;
+      --theme-macaron-text-muted: #8C847A;
+      --theme-macaron-accent: #4F7965;
+      --theme-macaron-accent-bg: #EBF3EE;
+      --theme-macaron-accent-border: #D1E4D8;
+      --theme-macaron-font: -apple-system, BlinkMacSystemFont, "PingFang SC", "Segoe UI", Roboto, sans-serif;
+      --theme-macaron-quote-mark: #D4C3B3;
+
+      /* Theme 4: 黑曜石极客 (Dark Obsidian) */
+      --theme-dark-bg: linear-gradient(150deg, #13151B 0%, #0B0C10 100%);
+      --theme-dark-border: #262933;
+      --theme-dark-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      --theme-dark-text-title: #F8FAFC;
+      --theme-dark-text-body: #CBD5E1;
+      --theme-dark-text-muted: #64748B;
+      --theme-dark-accent: #38BDF8;
+      --theme-dark-accent-bg: rgba(56, 189, 248, 0.12);
+      --theme-dark-accent-border: rgba(56, 189, 248, 0.28);
+      --theme-dark-font: -apple-system, BlinkMacSystemFont, "PingFang SC", "Segoe UI", Roboto, sans-serif;
+      --theme-dark-quote-mark: #1E293B;
+
+      /* Active theme bindings */
+      --card-bg: var(--theme-white-bg);
+      --card-border: var(--theme-white-border);
+      --card-shadow: var(--theme-white-shadow);
+      --card-text-title: var(--theme-white-text-title);
+      --card-text-body: var(--theme-white-text-body);
+      --card-text-muted: var(--theme-white-text-muted);
+      --card-accent: var(--theme-white-accent);
+      --card-accent-bg: var(--theme-white-accent-bg);
+      --card-accent-border: var(--theme-white-accent-border);
+      --card-font-family: var(--theme-white-font);
+      --card-quote-mark: var(--theme-white-quote-mark);
+
+      /* Typography & spacing variables */
+      --card-font-scale: 1;
+      --card-padding: 40px;
+    }
+
+    /* Apply active variables to the card element */
+    #card-canvas {
+      background: var(--card-bg);
+      border-color: var(--card-border);
+      box-shadow: var(--card-shadow);
+      font-family: var(--card-font-family);
+      padding: var(--card-padding);
+    }
+
+    #card-canvas .card-title {
+      color: var(--card-text-title);
+    }
+
+    #card-canvas .card-body {
+      color: var(--card-text-body);
+    }
+
+    #card-canvas .card-muted {
+      color: var(--card-text-muted);
+    }
+
+    #card-canvas .card-tag {
+      color: var(--card-accent);
+      background-color: var(--card-accent-bg);
+      border-color: var(--card-accent-border);
+    }
+
+    #card-canvas .card-divider {
+      background-color: var(--card-accent);
+    }
+
+    #card-canvas .card-quote-svg {
+      color: var(--card-quote-mark);
+    }
+
+    #card-canvas .card-footer-border {
+      border-color: var(--card-border);
+    }
+
+    /* Inline editable styling */
+    [contenteditable="true"] {
+      outline: none;
+      transition: background-color 0.2s, box-shadow 0.2s;
+      border-radius: 4px;
+    }
+    [contenteditable="true"]:hover {
+      background-color: rgba(125, 125, 125, 0.08);
+      cursor: text;
+    }
+    [contenteditable="true"]:focus {
+      background-color: rgba(125, 125, 125, 0.12);
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4);
+    }
+
+    /* Canvas dot background pattern */
+    .canvas-bg-grid {
+      background-image: radial-gradient(#CBD5E1 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+    .dark .canvas-bg-grid {
+      background-image: radial-gradient(#334155 1px, transparent 1px);
+    }
+
+    /* Aspect ratio dimensions */
+    .ratio-3-4 {
+      width: 480px;
+      height: 640px;
+    }
+    .ratio-1-1 {
+      width: 520px;
+      height: 520px;
+    }
+    .ratio-16-9 {
+      width: 680px;
+      height: 382.5px;
+    }
+
+    /* Scale down on smaller screens */
+    @media (max-width: 768px) {
+      .ratio-3-4 {
+        width: 330px;
+        height: 440px;
+      }
+      .ratio-1-1 {
+        width: 330px;
+        height: 330px;
+      }
+      .ratio-16-9 {
+        width: 340px;
+        height: 191px;
+      }
+      :root {
+        --card-padding: 24px;
+      }
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-full flex flex-col font-sans selection:bg-blue-500 selection:text-white">
+
+  <!-- 顶部导航栏 -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white font-bold text-sm shadow-sm">
+          SC
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <h1 class="text-sm sm:text-base font-bold text-slate-900 tracking-tight">SocialCard Studio</h1>
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-blue-50 text-blue-700 border border-blue-200/60">
+              WenSenLab
+            </span>
+          </div>
+          <p class="text-xs text-slate-500 hidden sm:block">营销人专属审美级社媒金句交互工场</p>
+        </div>
+      </div>
+
+      <!-- 顶栏快捷操作 -->
+      <div class="flex items-center space-x-2.5">
+        <button onclick="resetCardContent()" class="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-lg text-slate-600 bg-white border border-slate-200 hover:bg-slate-50 hover:text-slate-900 transition shadow-xs">
+          <svg class="w-3.5 h-3.5 mr-1 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+          </svg>
+          重置文案
+        </button>
+        <button onclick="copyQuoteText()" class="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-lg text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 hover:border-slate-300 transition shadow-xs">
+          <svg class="w-3.5 h-3.5 mr-1 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"></path>
+          </svg>
+          复制金句
+        </button>
+        <button id="export-btn" onclick="exportCardPng()" class="inline-flex items-center px-4 py-1.5 text-xs font-medium rounded-lg text-white bg-slate-900 hover:bg-slate-800 active:scale-95 transition shadow-sm">
+          <svg class="w-3.5 h-3.5 mr-1.5 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+          </svg>
+          导出高清 PNG (Retina)
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 工作区主体（画布 + 控制面板） -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 flex flex-col lg:flex-row gap-8 items-start">
+    
+    <!-- 左侧/中央：卡片实时预览画布区 -->
+    <div class="flex-1 w-full flex flex-col items-center justify-center p-6 sm:p-12 rounded-2xl bg-slate-200/60 border border-slate-300/70 canvas-bg-grid min-h-[560px] relative overflow-hidden">
+      
+      <!-- 顶部轻提示 -->
+      <div class="absolute top-3 left-4 flex items-center space-x-1.5 text-xs text-slate-500 bg-white/70 backdrop-blur-xs px-2.5 py-1 rounded-full border border-slate-200/80 shadow-2xs">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span>实时渲染 · 点击卡片内文字可直接编辑</span>
+      </div>
+
+      <!-- 核心卡片 DOM 节点 (可导出区域) -->
+      <div id="card-canvas" class="ratio-3-4 rounded-2xl border flex flex-col justify-between transition-all duration-300 relative select-text">
+        
+        <!-- 卡片顶部 Meta -->
+        <div>
+          <div class="flex items-center justify-between gap-3 mb-4">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span id="card-tag" class="card-tag px-2.5 py-0.5 text-xs font-semibold rounded-md border tracking-wide" contenteditable="true">{{TAG}}</span>
+              <span id="card-date" class="card-muted text-xs font-mono" contenteditable="true">{{DATE}}</span>
+            </div>
+            <!-- 装饰性大引号 -->
+            <div id="card-quote-icon" class="card-quote-svg">
+              <svg class="w-8 h-8 opacity-80" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- 抓手主标题 (Hook) -->
+          <h1 id="card-title" class="card-title text-xl sm:text-2xl font-bold tracking-tight leading-snug mb-3 cursor-text" contenteditable="true">
+            {{TITLE}}
+          </h1>
+
+          <!-- 强调分割线 -->
+          <div id="card-divider" class="card-divider h-1 w-10 rounded-full mb-4"></div>
+        </div>
+
+        <!-- 核心金句正文区 -->
+        <div class="flex-1 flex flex-col justify-center my-auto py-2">
+          <div id="card-quote" class="card-body text-base sm:text-lg leading-relaxed space-y-2 cursor-text" contenteditable="true" style="font-size: calc(1.125rem * var(--card-font-scale)); line-height: 1.65;">
+            {{QUOTE_PARAGRAPHS}}
+          </div>
+          
+          <div id="card-subquote" class="card-muted text-xs sm:text-sm mt-4 pt-3 border-t border-dashed border-slate-300/40 cursor-text" contenteditable="true">
+            {{SUB_QUOTE}}
+          </div>
+        </div>
+
+        <!-- 底部出处与版权钢印 -->
+        <div class="card-footer-border pt-4 border-t flex items-center justify-between gap-3 mt-4">
+          <div class="flex items-center space-x-2 overflow-hidden">
+            <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+            <span id="card-source" class="card-muted text-xs font-medium truncate cursor-text" contenteditable="true">
+              {{AUTHOR}} · {{SOURCE}}
+            </span>
+          </div>
+          <div id="card-watermark" class="text-[11px] font-mono tracking-wider text-slate-400 flex items-center space-x-1 select-none">
+            <span>WenSenLab_ ©文森策</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- 右侧：控制面板 (Control Panel) -->
+    <div class="w-full lg:w-80 shrink-0 bg-white p-6 rounded-2xl border border-slate-200/90 shadow-sm space-y-6">
+      
+      <div>
+        <h2 class="text-sm font-bold text-slate-900 tracking-tight mb-1 flex items-center justify-between">
+          <span>控制面板</span>
+          <span class="text-[11px] font-normal text-slate-400">实时交互调整</span>
+        </h2>
+        <p class="text-xs text-slate-500">定制卡片色彩、画幅比例与排版细节</p>
+      </div>
+
+      <!-- 1. 主题风格切换 -->
+      <div>
+        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2.5">
+          🎨 视觉风格 (Theme)
+        </label>
+        <div class="grid grid-cols-2 gap-2">
+          <!-- 冷白知性 -->
+          <button onclick="setTheme('white')" id="btn-theme-white" class="theme-btn active flex items-center space-x-2 p-2.5 rounded-xl border border-blue-600 bg-blue-50/50 text-left transition">
+            <span class="w-4 h-4 rounded-full bg-[#FFFFFF] border border-slate-300 shadow-2xs shrink-0"></span>
+            <div class="overflow-hidden">
+              <div class="text-xs font-medium text-slate-900">冷白知性</div>
+              <div class="text-[10px] text-slate-500 truncate">冷调灰白·默认</div>
+            </div>
+          </button>
+          
+          <!-- 人文纸感 -->
+          <button onclick="setTheme('cream')" id="btn-theme-cream" class="theme-btn flex items-center space-x-2 p-2.5 rounded-xl border border-slate-200 hover:border-slate-300 text-left transition">
+            <span class="w-4 h-4 rounded-full bg-[#F7F4EE] border border-[#E8E2D5] shadow-2xs shrink-0"></span>
+            <div class="overflow-hidden">
+              <div class="text-xs font-medium text-slate-900">人文纸感</div>
+              <div class="text-[10px] text-slate-500 truncate">米黄衬线·质感</div>
+            </div>
+          </button>
+
+          <!-- 马卡龙粉彩 -->
+          <button onclick="setTheme('macaron')" id="btn-theme-macaron" class="theme-btn flex items-center space-x-2 p-2.5 rounded-xl border border-slate-200 hover:border-slate-300 text-left transition">
+            <span class="w-4 h-4 rounded-full bg-[#F5F2EB] border border-[#EADBCE] shadow-2xs shrink-0"></span>
+            <div class="overflow-hidden">
+              <div class="text-xs font-medium text-slate-900">马卡龙</div>
+              <div class="text-[10px] text-slate-500 truncate">柔和温润·现代</div>
+            </div>
+          </button>
+
+          <!-- 黑曜石极客 -->
+          <button onclick="setTheme('dark')" id="btn-theme-dark" class="theme-btn flex items-center space-x-2 p-2.5 rounded-xl border border-slate-200 hover:border-slate-300 text-left transition">
+            <span class="w-4 h-4 rounded-full bg-[#13151B] border border-[#262933] shadow-2xs shrink-0"></span>
+            <div class="overflow-hidden">
+              <div class="text-xs font-medium text-slate-900">黑曜石</div>
+              <div class="text-[10px] text-slate-500 truncate">暗黑极客·荧光</div>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- 2. 画幅比例切换 -->
+      <div>
+        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2.5">
+          📐 画幅比例 (Ratio)
+        </label>
+        <div class="grid grid-cols-3 gap-2">
+          <button onclick="setRatio('3-4')" id="btn-ratio-3-4" class="ratio-btn active py-2 px-2.5 rounded-lg border border-blue-600 bg-blue-50/50 text-xs font-medium text-blue-700 text-center transition">
+            3 : 4
+            <span class="block text-[10px] text-slate-500 font-normal">小红书</span>
+          </button>
+          <button onclick="setRatio('1-1')" id="btn-ratio-1-1" class="ratio-btn py-2 px-2.5 rounded-lg border border-slate-200 hover:border-slate-300 text-xs font-medium text-slate-700 text-center transition">
+            1 : 1
+            <span class="block text-[10px] text-slate-500 font-normal">朋友圈/即刻</span>
+          </button>
+          <button onclick="setRatio('16-9')" id="btn-ratio-16-9" class="ratio-btn py-2 px-2.5 rounded-lg border border-slate-200 hover:border-slate-300 text-xs font-medium text-slate-700 text-center transition">
+            16 : 9
+            <span class="block text-[10px] text-slate-500 font-normal">X/横版图</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 3. 排版微调器 -->
+      <div class="space-y-4 pt-2 border-t border-slate-100">
+        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
+          ⚙️ 排版参数微调
+        </label>
+
+        <!-- 字号缩放 -->
+        <div>
+          <div class="flex justify-between text-xs text-slate-600 mb-1.5">
+            <span>字号缩放 (Font Scale)</span>
+            <span id="font-scale-val" class="font-mono text-slate-900 font-medium">1.0x</span>
+          </div>
+          <input type="range" id="font-scale-slider" min="0.8" max="1.35" step="0.05" value="1.0" oninput="updateFontScale(this.value)" class="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
+        </div>
+
+        <!-- 内边距调整 -->
+        <div>
+          <div class="flex justify-between text-xs text-slate-600 mb-1.5">
+            <span>卡片边距 (Padding)</span>
+            <span id="padding-val" class="font-mono text-slate-900 font-medium">40px</span>
+          </div>
+          <input type="range" id="padding-slider" min="20" max="56" step="4" value="40" oninput="updatePadding(this.value)" class="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
+        </div>
+      </div>
+
+      <!-- 4. 开关控制项 -->
+      <div class="space-y-3 pt-2 border-t border-slate-100">
+        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
+          👁️ 视觉元素显隐
+        </label>
+        
+        <label class="flex items-center justify-between text-xs text-slate-700 cursor-pointer">
+          <span>显示版权钢印 (WenSenLab_)</span>
+          <input type="checkbox" id="toggle-watermark" checked onchange="toggleWatermark(this.checked)" class="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500">
+        </label>
+
+        <label class="flex items-center justify-between text-xs text-slate-700 cursor-pointer">
+          <span>显示装饰引号图标</span>
+          <input type="checkbox" id="toggle-quote-icon" checked onchange="toggleQuoteIcon(this.checked)" class="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500">
+        </label>
+      </div>
+
+      <!-- 底部提示卡 -->
+      <div class="p-3 bg-slate-50 rounded-xl border border-slate-200/80 text-[11px] text-slate-500 space-y-1">
+        <div class="font-medium text-slate-700 flex items-center space-x-1">
+          <span>💡 极简操作贴士</span>
+        </div>
+        <p>1. 点击卡片直接编辑文字；</p>
+        <p>2. 调满意后点击右上角「导出高清 PNG」；</p>
+        <p>3. 自动以 2.5x Retina 像素比渲染，直接可发社媒。</p>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- 全局 Toast 提示浮层 -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none bg-slate-900 text-white text-xs px-4 py-2.5 rounded-xl shadow-lg flex items-center space-x-2">
+    <span id="toast-icon">✨</span>
+    <span id="toast-msg">已成功导出！</span>
+  </div>
+
+  <script>
+    // Initial State & Content Backup
+    const defaultData = {
+      tag: document.getElementById('card-tag').innerText,
+      date: document.getElementById('card-date').innerText,
+      title: document.getElementById('card-title').innerText,
+      quote: document.getElementById('card-quote').innerHTML,
+      subquote: document.getElementById('card-subquote').innerText,
+      source: document.getElementById('card-source').innerText
+    };
+
+    // Theme Switcher
+    function setTheme(theme) {
+      const root = document.documentElement;
+      const themeBtns = document.querySelectorAll('.theme-btn');
+      themeBtns.forEach(btn => {
+        btn.classList.remove('border-blue-600', 'bg-blue-50/50', 'active');
+        btn.classList.add('border-slate-200');
+      });
+
+      const activeBtn = document.getElementById(`btn-theme-${theme}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('border-slate-200');
+        activeBtn.classList.add('border-blue-600', 'bg-blue-50/50', 'active');
+      }
+
+      if (theme === 'white') {
+        root.style.setProperty('--card-bg', 'var(--theme-white-bg)');
+        root.style.setProperty('--card-border', 'var(--theme-white-border)');
+        root.style.setProperty('--card-shadow', 'var(--theme-white-shadow)');
+        root.style.setProperty('--card-text-title', 'var(--theme-white-text-title)');
+        root.style.setProperty('--card-text-body', 'var(--theme-white-text-body)');
+        root.style.setProperty('--card-text-muted', 'var(--theme-white-text-muted)');
+        root.style.setProperty('--card-accent', 'var(--theme-white-accent)');
+        root.style.setProperty('--card-accent-bg', 'var(--theme-white-accent-bg)');
+        root.style.setProperty('--card-accent-border', 'var(--theme-white-accent-border)');
+        root.style.setProperty('--card-font-family', 'var(--theme-white-font)');
+        root.style.setProperty('--card-quote-mark', 'var(--theme-white-quote-mark)');
+      } else if (theme === 'cream') {
+        root.style.setProperty('--card-bg', 'var(--theme-cream-bg)');
+        root.style.setProperty('--card-border', 'var(--theme-cream-border)');
+        root.style.setProperty('--card-shadow', 'var(--theme-cream-shadow)');
+        root.style.setProperty('--card-text-title', 'var(--theme-cream-text-title)');
+        root.style.setProperty('--card-text-body', 'var(--theme-cream-text-body)');
+        root.style.setProperty('--card-text-muted', 'var(--theme-cream-text-muted)');
+        root.style.setProperty('--card-accent', 'var(--theme-cream-accent)');
+        root.style.setProperty('--card-accent-bg', 'var(--theme-cream-accent-bg)');
+        root.style.setProperty('--card-accent-border', 'var(--theme-cream-accent-border)');
+        root.style.setProperty('--card-font-family', 'var(--theme-cream-font)');
+        root.style.setProperty('--card-quote-mark', 'var(--theme-cream-quote-mark)');
+      } else if (theme === 'macaron') {
+        root.style.setProperty('--card-bg', 'var(--theme-macaron-bg)');
+        root.style.setProperty('--card-border', 'var(--theme-macaron-border)');
+        root.style.setProperty('--card-shadow', 'var(--theme-macaron-shadow)');
+        root.style.setProperty('--card-text-title', 'var(--theme-macaron-text-title)');
+        root.style.setProperty('--card-text-body', 'var(--theme-macaron-text-body)');
+        root.style.setProperty('--card-text-muted', 'var(--theme-macaron-text-muted)');
+        root.style.setProperty('--card-accent', 'var(--theme-macaron-accent)');
+        root.style.setProperty('--card-accent-bg', 'var(--theme-macaron-accent-bg)');
+        root.style.setProperty('--card-accent-border', 'var(--theme-macaron-accent-border)');
+        root.style.setProperty('--card-font-family', 'var(--theme-macaron-font)');
+        root.style.setProperty('--card-quote-mark', 'var(--theme-macaron-quote-mark)');
+      } else if (theme === 'dark') {
+        root.style.setProperty('--card-bg', 'var(--theme-dark-bg)');
+        root.style.setProperty('--card-border', 'var(--theme-dark-border)');
+        root.style.setProperty('--card-shadow', 'var(--theme-dark-shadow)');
+        root.style.setProperty('--card-text-title', 'var(--theme-dark-text-title)');
+        root.style.setProperty('--card-text-body', 'var(--theme-dark-text-body)');
+        root.style.setProperty('--card-text-muted', 'var(--theme-dark-text-muted)');
+        root.style.setProperty('--card-accent', 'var(--theme-dark-accent)');
+        root.style.setProperty('--card-accent-bg', 'var(--theme-dark-accent-bg)');
+        root.style.setProperty('--card-accent-border', 'var(--theme-dark-accent-border)');
+        root.style.setProperty('--card-font-family', 'var(--theme-dark-font)');
+        root.style.setProperty('--card-quote-mark', 'var(--theme-dark-quote-mark)');
+      }
+    }
+
+    // Ratio Switcher
+    function setRatio(ratio) {
+      const card = document.getElementById('card-canvas');
+      const ratioBtns = document.querySelectorAll('.ratio-btn');
+      ratioBtns.forEach(btn => {
+        btn.classList.remove('border-blue-600', 'bg-blue-50/50', 'text-blue-700', 'active');
+        btn.classList.add('border-slate-200', 'text-slate-700');
+      });
+
+      const activeBtn = document.getElementById(`btn-ratio-${ratio}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('border-slate-200', 'text-slate-700');
+        activeBtn.classList.add('border-blue-600', 'bg-blue-50/50', 'text-blue-700', 'active');
+      }
+
+      card.classList.remove('ratio-3-4', 'ratio-1-1', 'ratio-16-9');
+      card.classList.add(`ratio-${ratio}`);
+    }
+
+    // Font Scale
+    function updateFontScale(val) {
+      document.documentElement.style.setProperty('--card-font-scale', val);
+      document.getElementById('font-scale-val').innerText = `${parseFloat(val).toFixed(2)}x`;
+    }
+
+    // Padding
+    function updatePadding(val) {
+      document.documentElement.style.setProperty('--card-padding', `${val}px`);
+      document.getElementById('padding-val').innerText = `${val}px`;
+    }
+
+    // Watermark Toggle
+    function toggleWatermark(show) {
+      document.getElementById('card-watermark').style.display = show ? 'flex' : 'none';
+    }
+
+    // Quote Icon Toggle
+    function toggleQuoteIcon(show) {
+      document.getElementById('card-quote-icon').style.display = show ? 'block' : 'none';
+    }
+
+    // Reset Content
+    function resetCardContent() {
+      if (confirm('确定要恢复初始文案吗？手动编辑的文字将被重置。')) {
+        document.getElementById('card-tag').innerText = defaultData.tag;
+        document.getElementById('card-date').innerText = defaultData.date;
+        document.getElementById('card-title').innerText = defaultData.title;
+        document.getElementById('card-quote').innerHTML = defaultData.quote;
+        document.getElementById('card-subquote').innerText = defaultData.subquote;
+        document.getElementById('card-source').innerText = defaultData.source;
+        showToast('文案已重置为初始状态');
+      }
+    }
+
+    // Copy Quote Text
+    function copyQuoteText() {
+      const title = document.getElementById('card-title').innerText.trim();
+      const quote = document.getElementById('card-quote').innerText.trim();
+      const source = document.getElementById('card-source').innerText.trim();
+      const fullText = `【${title}】\n\n${quote}\n\n—— ${source}`;
+
+      navigator.clipboard.writeText(fullText).then(() => {
+        showToast('金句内容已复制到剪贴板');
+      }).catch(err => {
+        showToast('复制失败，请手动选择复制');
+      });
+    }
+
+    // High-Resolution PNG Export (Retina 2.5x)
+    async function exportCardPng() {
+      const card = document.getElementById('card-canvas');
+      const exportBtn = document.getElementById('export-btn');
+      const originalHtml = exportBtn.innerHTML;
+
+      // Blur any active element to remove focus ring or caret from screenshot
+      if (document.activeElement) {
+        document.activeElement.blur();
+      }
+      window.getSelection()?.removeAllRanges();
+
+      try {
+        exportBtn.disabled = true;
+        exportBtn.innerHTML = `
+          <svg class="animate-spin w-3.5 h-3.5 mr-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+          </svg>
+          渲染高清中...
+        `;
+
+        if (document.fonts) {
+          await document.fonts.ready;
+        }
+
+        // 2.5x Retina scale for crisp mobile readability
+        const canvas = await html2canvas(card, {
+          scale: 2.5,
+          useCORS: true,
+          allowTaint: false,
+          backgroundColor: null,
+          logging: false
+        });
+
+        const link = document.createElement('a');
+        const rawTitle = document.getElementById('card-title').innerText.trim();
+        const safeTitle = rawTitle.replace(/[\/\\:*?"<>|]/g, '').slice(0, 16) || 'social-card';
+        link.download = `${safeTitle}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+
+        showToast('🎉 高清卡片 PNG 已保存至下载！');
+      } catch (err) {
+        console.error('Export error:', err);
+        alert('导出失败，请重试或在控制台查看：' + err.message);
+      } finally {
+        exportBtn.disabled = false;
+        exportBtn.innerHTML = originalHtml;
+      }
+    }
+
+    // Toast Notification Helper
+    function showToast(msg, icon = '✨') {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-msg').innerText = msg;
+      document.getElementById('toast-icon').innerText = icon;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 2600);
+    }
+  </script>
+</body>
+</html>

@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "repo": "wensenlab/wensen-marketing-skills",
   "source_root": "/Users/leixiao/.skills-manager/skills",
-  "updated_at": "2026-10-24T19:22:13.127615",
+  "updated_at": "2026-10-24T20:09:50.383683",
   "skills": [
     {
       "name": "brand-strategy-analyst",
@@ -13,6 +13,12 @@
     {
       "name": "creative-hook-generator",
       "category": "社媒爆点抓手",
+      "status": "active",
+      "added_at": "2026-10-24"
+    },
+    {
+      "name": "social-card-maker",
+      "category": "社媒金句卡片",
       "status": "active",
       "added_at": "2026-10-24"
     }
