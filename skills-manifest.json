@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "repo": "wensenlab/wensen-marketing-skills",
   "source_root": "/Users/leixiao/.skills-manager/skills",
-  "updated_at": "2026-10-24T20:13:09.103095",
+  "updated_at": "2026-10-24T21:05:28.592321",
   "skills": [
     {
       "name": "brand-strategy-analyst",
@@ -25,6 +25,12 @@
     {
       "name": "brand-pulse-workbench",
       "category": "品牌比稿工作台",
+      "status": "active",
+      "added_at": "2026-10-24"
+    },
+    {
+      "name": "creative-campaign-producer",
+      "category": "商业创意与分镜脚本",
       "status": "active",
       "added_at": "2026-10-24"
     }
