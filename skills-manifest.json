@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "repo": "wensenlab/wensen-marketing-skills",
   "source_root": "/Users/leixiao/.skills-manager/skills",
-  "updated_at": "2026-10-25T00:05:37.819531",
+  "updated_at": "2026-10-25T00:07:39.455900",
   "skills": [
     {
       "name": "brand-strategy-analyst",
@@ -103,6 +103,12 @@
     {
       "name": "brand-slogan-studio",
       "category": "品牌超级口号",
+      "status": "active",
+      "added_at": "2026-10-25"
+    },
+    {
+      "name": "co-branding-ip-strategist",
+      "category": "跨界联名与IP策划",
       "status": "active",
       "added_at": "2026-10-25"
     }
