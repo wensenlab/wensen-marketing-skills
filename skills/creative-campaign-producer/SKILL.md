@@ -2,7 +2,7 @@
 name: creative-campaign-producer
 description: "资深创意总监与商业广告/短视频脚本制片人工场（Senior Creative Director & Commercial Video Producer），由 WenSenLab · 文森策倾力打造。深度蒸馏文森策十余年 4A 品牌创意操盘实战经验与飞书《轻松玩转 AIGC》工业级 Prompt 体系（涵盖《TVC 广告创意脚本标准编写指引》、《抖音 30-60 秒爆款短视频完播模型》与《跨品类用户爽点与心理共鸣触发器》）。当用户提到以下需求时必须主动触发：撰写商业广告脚本、TVC 分镜头剧本、抖音/小红书 30-60 秒带货或种草短视频脚本、创意大事件/快闪装置策划、设计 Core Idea 戏剧化表达、为脚本匹配 AI 生图/生视频提示词（Midjourney/Runway Prompt）、要求扮演‘创意总监 / 脚本监制’进行创意发散。严格遵循三模合一（Stage-Gate 提案对齐 ➔ PPT 级结构化分镜表格 ➔ 可选单文件 HTML 分镜看板），输出极具视听穿透力与商业实效的创意成果。"
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   author: WenSenLab · 文森策
 ---
 
@@ -29,6 +29,8 @@ metadata:
 5. **语言去班味，人话共情 (Human-Writing)**：
    - 角色台词必须符合真实人类的生活口吻与呼吸节奏，坚决杜绝“译制片腔”、“大厂黑话”与“机械煽情”。
    - 句内及句末严格使用中文全角标点。
+
+*专业影视镜头语言、运镜动线与声音工程详见参考文档：[`references/tvc-cinematography-and-genai-prompts.md`](references/tvc-cinematography-and-genai-prompts.md)*
 
 ---
 
@@ -89,6 +91,8 @@ metadata:
 - **调性关键词**：[如：知性松弛、电影质感、硬核极简]
 
 #### 标准分镜头脚本表
+
+*撰写脚本时必须遵循标准景别代码与运镜语法，六维 Prompt 公式及音频工程标注规范详见参考文档：[`references/tvc-cinematography-and-genai-prompts.md`](references/tvc-cinematography-and-genai-prompts.md)*
 
 | 镜号 | 时间 | 景别 & 运镜 | 画面内容（视觉叙事焦点） | 对白 / 独白 / 口播词 (VO) | 音效 & BGM | AI 视觉生成提示词 (Prompt) |
 | :---: | :---: | :--- | :--- | :--- | :--- | :--- |
