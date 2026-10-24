@@ -2,11 +2,17 @@
   "version": "1.0.0",
   "repo": "wensenlab/wensen-marketing-skills",
   "source_root": "/Users/leixiao/.skills-manager/skills",
-  "updated_at": "2026-10-24T19:21:27.860007",
+  "updated_at": "2026-10-24T19:21:56.030630",
   "skills": [
     {
       "name": "brand-strategy-analyst",
       "category": "品牌策略",
+      "status": "active",
+      "added_at": "2026-10-24"
+    },
+    {
+      "name": "creative-hook-generator",
+      "category": "社媒爆点抓手",
       "status": "active",
       "added_at": "2026-10-24"
     }
