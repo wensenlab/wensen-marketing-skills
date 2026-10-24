@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "repo": "wensenlab/wensen-marketing-skills",
   "source_root": "/Users/leixiao/.skills-manager/skills",
-  "updated_at": "2026-10-24T22:00:54.008146",
+  "updated_at": "2026-10-24T22:05:13.854128",
   "skills": [
     {
       "name": "brand-strategy-analyst",
@@ -79,6 +79,12 @@
     {
       "name": "campaign-recap-crafter",
       "category": "战役复盘与高管汇报",
+      "status": "active",
+      "added_at": "2026-10-24"
+    },
+    {
+      "name": "scene-selling-point-matrix",
+      "category": "场景卖点与微文案",
       "status": "active",
       "added_at": "2026-10-24"
     }
