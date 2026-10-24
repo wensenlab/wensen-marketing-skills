@@ -111,7 +111,7 @@ metadata:
 1. **聊天框内严禁直接粘贴全量 HTML 源码**；
 2. **正文交付规范**：
    - 给出**可点击的本地文件绝对路径与相对路径链接**；
-   - 提取 **3～5 行卡片内容摘要**（包含：抓手标题、核心金句文本、出处标签）；
+   - 提取 **3～5 行卡片内容摘要**（包含：吸睛标题、核心金句文本、出处标签）；
    - 提供**浏览器快速打开的指引**（如终端运行 `open xxx-card.html`）。
 
 ---
@@ -119,5 +119,5 @@ metadata:
 ## 7. 参考文件索引 (Progressive Disclosure)
 
 - [`references/card-blueprint.html`](references/card-blueprint.html)：完整工业级单文件 HTML 交互工场模板蓝图；
-- [`references/content-extraction-guide.md`](references/content-extraction-guide.md)：抓手标题、金句萃取与去班味文字准则；
+- [`references/content-extraction-guide.md`](references/content-extraction-guide.md)：吸睛标题、金句萃取与去班味文字准则；
 - [`references/aesthetic-themes-guide.md`](references/aesthetic-themes-guide.md)：四大审美主题色盘、画幅比例与导出规约。
