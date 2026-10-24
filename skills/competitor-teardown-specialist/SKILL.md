@@ -2,7 +2,7 @@
 name: competitor-teardown-specialist
 description: "竞品商业攻防深度拆解与破局反切专家（Competitor Strategic Teardown & Counter-Positioning Specialist），由 WenSenLab · 文森策倾力打造。深度融合文森策十余年 4A 战略对抗咨询实战内功与飞书《竞争对手分析与攻防战术指南》体系。当用户提到以下需求时必须主动触发：竞品分析、竞品拆解、竞品攻防、如何打竞品、反切定位、竞品优劣势诊断、找竞品弱点、寻找市场空白（White Space）、输入对标竞品要求扮演‘商业间谍 / 竞争战略专家’进行逆向工程拆解。严格遵循三模合一（Stage-Gate 攻防主轴对齐 ➔ 深度攻防对抗全案 ➔ 可选单文件 HTML 攻防雷达看板），直击商业竞争破局本质。"
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   author: WenSenLab · 文森策
 ---
 
@@ -33,6 +33,8 @@ metadata:
 4. **语言去班味，客观求真 (Human-Writing)**：
    - 拒绝大厂空洞套话（赋能、闭环、抓手、降维打击等）。用冷静、通俗、敏锐的商业人话讲透对手的软肋与我方的胜算。
    - 全文严格使用中文全角标点。
+
+*强项固有弱点解构、四大对立反切战术与比稿前置消毒法详见参考文档：[`references/counter-positioning-tactics.md`](references/counter-positioning-tactics.md)*
 
 ---
 
@@ -80,6 +82,8 @@ metadata:
 ---
 
 ### 3.2 Phase 2：工业级竞品深度攻防拆解全案
+
+*深水区负评怨气聚类工程与现场高情商应答三步法详见参考文档：[`references/counter-positioning-tactics.md`](references/counter-positioning-tactics.md)*
 
 用户确认路线后，输出标准竞争拆解报告：
 
