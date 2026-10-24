@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "repo": "wensenlab/wensen-marketing-skills",
   "source_root": "/Users/leixiao/.skills-manager/skills",
-  "updated_at": "2026-10-24T21:05:28.592321",
+  "updated_at": "2026-10-24T21:06:33.975787",
   "skills": [
     {
       "name": "brand-strategy-analyst",
@@ -31,6 +31,12 @@
     {
       "name": "creative-campaign-producer",
       "category": "商业创意与分镜脚本",
+      "status": "active",
+      "added_at": "2026-10-24"
+    },
+    {
+      "name": "imc-campaign-architect",
+      "category": "全案战役与IMC策划",
       "status": "active",
       "added_at": "2026-10-24"
     }
