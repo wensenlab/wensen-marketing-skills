@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "repo": "wensenlab/wensen-marketing-skills",
   "source_root": "/Users/leixiao/.skills-manager/skills",
-  "updated_at": "2026-10-25T00:07:39.455900",
+  "updated_at": "2026-10-25T00:09:12.265131",
   "skills": [
     {
       "name": "brand-strategy-analyst",
@@ -109,6 +109,12 @@
     {
       "name": "co-branding-ip-strategist",
       "category": "跨界联名与IP策划",
+      "status": "active",
+      "added_at": "2026-10-25"
+    },
+    {
+      "name": "pop-up-stunt-producer",
+      "category": "社交破圈与线下快闪",
       "status": "active",
       "added_at": "2026-10-25"
     }
