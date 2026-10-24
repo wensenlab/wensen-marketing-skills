@@ -11,6 +11,7 @@
 
 | 技能目录 | 技能定位与核心价值 | 适用场景与触发词 | 版本 | 状态 |
 | :--- | :--- | :--- | :--- | :--- |
+| [`skills/brand-strategy-analyst`](skills/brand-strategy-analyst/) | **品牌策略**<br/>资深品牌策略分析师与商业洞察中枢（Senior Brand Strategy Analyst），由 WenSenLab · 文森策打造。当用户提到以下需求时必须主动触发：品牌定位分析、商业策略推演、竞品差异化诊断、品牌资产梳理、撰写比稿策略大纲、推导 B... | 详见技能定义说明 | `v1.0.0` | ✅ 已就绪 |
 | [`skills/creative-hook-generator`](skills/creative-hook-generator/) | **社媒爆点抓手**<br/>社媒爆点抓手与互动型文案发生器（Creative Hook & Headline Studio），由 WenSenLab · 文森策打造。当用户提到以下需求时必须主动触发：取标题、起标题、拟标题、写爆款标题、打磨标题、标题优化、标题诊断、社媒抓手（Hoo... | 详见技能定义说明 | `v1.0.0` | ✅ 已就绪 |
 
 ---
