@@ -157,3 +157,15 @@ metadata:
 - [`references/five-perspectives-guide.md`](references/five-perspectives-guide.md)：深入掌握 5 大破局视角与 SENSE/奥格威公式的结合；
 - [`references/platform-nuance-matrix.md`](references/platform-nuance-matrix.md)：多平台算法偏好、小红书双层抓手与互动问答设计；
 - [`references/redlines-and-anti-patterns.md`](references/redlines-and-anti-patterns.md)：权威负面词典、旧标题诊断演练与四大真实场景 Bad vs Good 深度对照。
+
+---
+
+## 8. 视觉化卡片延展协同指引 (Cross-Skill Synergy)
+
+本技能专注于文字逻辑、开篇心理学与标题穿透力，输出高品质纯文本。
+
+若用户需要将精选出的爆款标题、穿透金句或置顶评论制作成审美高级的**社媒卡片、朋友圈金句图或即刻分享图**：
+- **无缝转接指引**：推荐无缝调用本地已安装的技能 **`social-card-maker`**；
+- **主动提醒规范**：在 Markdown 标题交付的结尾，可轻量提醒：
+  > 💡 **金句卡片制作建议**：若想把其中的精选标题或置顶金句制作成审美级社交图文/朋友圈卡片，可直接调用技能 **`social-card-maker`** 为其一键生成单文件 HTML 交互编辑卡片页。
+
