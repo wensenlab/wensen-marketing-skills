@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "repo": "wensenlab/wensen-marketing-skills",
   "source_root": "/Users/leixiao/.skills-manager/skills",
-  "updated_at": "2026-10-24T21:53:15.511435",
+  "updated_at": "2026-10-24T22:00:54.008146",
   "skills": [
     {
       "name": "brand-strategy-analyst",
@@ -73,6 +73,12 @@
     {
       "name": "ad-law-compliance-guard",
       "category": "广告法合规与改写",
+      "status": "active",
+      "added_at": "2026-10-24"
+    },
+    {
+      "name": "campaign-recap-crafter",
+      "category": "战役复盘与高管汇报",
       "status": "active",
       "added_at": "2026-10-24"
     }
