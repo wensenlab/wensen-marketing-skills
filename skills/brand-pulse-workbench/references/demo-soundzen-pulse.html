@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SoundZen · 品牌比稿与策略洞察看板 | BrandPulse Workbench</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              500: '#06b6d4',
+              600: '#0891b2',
+              900: '#164e63',
+            }
+          },
+          fontFamily: {
+            sans: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+            serif: ['Newsreader', 'Georgia', 'Songti SC', 'serif'],
+            mono: ['JetBrains Mono', 'Menlo', 'Monaco', 'Courier New', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* 打印/导出 PDF 适配 */
+    @media print {
+      .no-print, header nav, button, #toast {
+        display: none !important;
+      }
+      body {
+        background: #ffffff !important;
+        color: #111827 !important;
+        padding: 0 !important;
+      }
+      .tab-pane {
+        display: block !important;
+        opacity: 1 !important;
+        margin-bottom: 2rem !important;
+        page-break-inside: avoid;
+      }
+      .print-avoid-break {
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen selection:bg-brand-500 selection:text-white">
+
+  <!-- 顶部导航栏 (Fixed/Sticky) -->
+  <header class="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200/80 transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-600 to-cyan-500 flex items-center justify-center text-white font-bold text-sm shadow-sm">
+          BP
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <h1 class="text-base font-bold text-slate-900 tracking-tight">SoundZen</h1>
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-50 text-indigo-700 border border-indigo-200/50">
+              4A 比稿策略看板
+            </span>
+          </div>
+          <p class="text-xs text-slate-500">知识创作者的声音飞地 · 2026 年度品牌战略比稿提案</p>
+        </div>
+      </div>
+
+      <!-- 操作按钮组 -->
+      <div class="flex items-center space-x-2.5 no-print">
+        <button onclick="copyMarkdownSummary()" class="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-lg text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 hover:border-slate-300 transition shadow-sm">
+          <svg class="w-3.5 h-3.5 mr-1.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"></path>
+          </svg>
+          复制策略大纲
+        </button>
+        <button onclick="window.print()" class="inline-flex items-center px-3.5 py-1.5 text-xs font-medium rounded-lg text-white bg-slate-900 hover:bg-slate-800 transition shadow-sm">
+          <svg class="w-3.5 h-3.5 mr-1.5 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+          </svg>
+          导出提案 PDF
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主体工作区 -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+    <!-- 顶层战况快报 (Executive Summary) -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 print-avoid-break">
+      <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+        <span class="text-xs font-medium text-slate-400 block mb-1">目标客群切片</span>
+        <div class="text-sm font-semibold text-slate-800">独立知识创作者 / 数字游民 / 深度思考者</div>
+      </div>
+      <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+        <span class="text-xs font-medium text-slate-400 block mb-1">核心对抗标的</span>
+        <div class="text-sm font-semibold text-slate-800">韶音 (Shokz) · 传统骨传导运动耳机</div>
+      </div>
+      <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+        <span class="text-xs font-medium text-slate-400 block mb-1">核心品类属性</span>
+        <div class="text-sm font-semibold text-slate-800">消费电子 3C · 开放式全天候声学外设</div>
+      </div>
+      <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+        <span class="text-xs font-medium text-slate-400 block mb-1">破局战略楔子</span>
+        <div class="text-sm font-semibold text-indigo-600">从“荷尔蒙运动外设”跃迁至“知性思考飞地”</div>
+      </div>
+    </div>
+
+    <!-- 模块一：商业阻力与核心洞察 (Tension & Core Insight) -->
+    <section class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm print-avoid-break">
+      <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center space-x-2.5">
+          <span class="w-2.5 h-6 bg-indigo-600 rounded-full"></span>
+          <h2 class="text-lg font-bold text-slate-900 tracking-tight">01 / 商业阻力与核心洞察</h2>
+        </div>
+        <span class="text-xs text-slate-400 font-mono">TENSION & INSIGHT</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- 行业惯性 -->
+        <div class="bg-slate-50/80 rounded-2xl p-5 border border-slate-100 flex flex-col justify-between">
+          <div>
+            <div class="inline-flex items-center px-2 py-1 rounded bg-slate-200 text-slate-700 text-xs font-medium mb-3">
+              行业共识惯性
+            </div>
+            <p class="text-sm text-slate-600 leading-relaxed">全行业开放式耳机高度内卷于“运动防脱、暴汗狂欢、高燃澎湃”等荷尔蒙符号，设计充斥塑料荧光感，陷入纯硬件参数的堆砌死局。</p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-200/60 text-xs text-slate-400">
+            全行业普遍陷入的同质化套路
+          </div>
+        </div>
+
+        <!-- 用户矛盾张力 -->
+        <div class="bg-amber-50/50 rounded-2xl p-5 border border-amber-200/60 flex flex-col justify-between">
+          <div>
+            <div class="inline-flex items-center px-2 py-1 rounded bg-amber-100 text-amber-800 text-xs font-medium mb-3">
+              用户未言明矛盾
+            </div>
+            <p class="text-sm text-slate-700 leading-relaxed font-medium">文字工作者与创作者渴望在嘈杂的咖啡馆与书房构筑属于自己的心流结界，但传统降噪耳机压耳闷胀，而市面上的运动挂耳耳机在知性社交场合又显得格外粗糙与突兀。</p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-amber-200/60 text-xs text-amber-700">
+            现实阻力与渴望之间的巨大撕裂
+          </div>
+        </div>
+
+        <!-- 破局战略楔子 -->
+        <div class="bg-indigo-50/50 rounded-2xl p-5 border border-indigo-200/60 flex flex-col justify-between">
+          <div>
+            <div class="inline-flex items-center px-2 py-1 rounded bg-indigo-100 text-indigo-800 text-xs font-medium mb-3">
+              品牌破局战略楔子
+            </div>
+            <p class="text-sm text-indigo-950 leading-relaxed font-medium">坚决反对把开放式声学矮化为“健身房外设”。将 SoundZen 重新定义为脑力工作者的“第三耳道空气感飞地”——提供长达 14 小时无压佩戴与私密定向声盾。</p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-indigo-200/60 text-xs text-indigo-600 font-semibold">
+            确立全新品类标准与价值锚点
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 模块二：竞争心智四象限坐标系 (Positioning Matrix) -->
+    <section class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm print-avoid-break">
+      <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center space-x-2.5">
+          <span class="w-2.5 h-6 bg-cyan-500 rounded-full"></span>
+          <h2 class="text-lg font-bold text-slate-900 tracking-tight">02 / 竞争心智四象限坐标系</h2>
+        </div>
+        <span class="text-xs text-slate-400 font-mono">POSITIONING MATRIX</span>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <!-- SVG 自绘交互式四象限图 -->
+        <div class="lg:col-span-7 bg-slate-900 rounded-2xl p-6 text-white relative overflow-hidden shadow-inner flex flex-col items-center justify-center">
+          <!-- 象限极性文字 -->
+          <div class="w-full flex justify-between text-xs text-slate-400 font-mono px-2 mb-2">
+            <span>知性心流深度工作 (Deep Work)</span>
+            <span>知性心流深度工作 (Deep Work)</span>
+          </div>
+
+          <div class="relative w-full max-w-[460px] aspect-square flex items-center justify-center">
+            <!-- SVG 坐标网格与品牌散点 -->
+            <svg class="w-full h-full" viewBox="0 0 400 400">
+              <!-- 背景象限底色区分 -->
+              <rect x="200" y="0" width="200" height="200" fill="rgba(6, 182, 212, 0.08)" rx="8"></rect>
+              <text x="210" y="25" fill="rgba(6, 182, 212, 0.5)" font-size="10" font-family="monospace">BLUE OCEAN [蓝海真空区]</text>
+              <text x="15" y="385" fill="rgba(148, 163, 184, 0.3)" font-size="10" font-family="monospace">RED OCEAN [红海同质区]</text>
+
+              <!-- 坐标轴 -->
+              <line x1="0" y1="200" x2="400" y2="200" stroke="#334155" stroke-width="1.5" stroke-dasharray="4 4"></line>
+              <line x1="200" y1="0" x2="200" y2="400" stroke="#334155" stroke-width="1.5" stroke-dasharray="4 4"></line>
+
+              <!-- 轴向箭头与标签 -->
+              <text x="390" y="195" fill="#94a3b8" font-size="10" text-anchor="end">当代人文极简美学 →</text>
+              <text x="10" y="195" fill="#94a3b8" font-size="10">← 传统硬件堆料</text>
+              <text x="205" y="15" fill="#94a3b8" font-size="10">↑ 知性心流深度工作 (Deep Work)</text>
+              <text x="205" y="390" fill="#94a3b8" font-size="10">↓ 荷尔蒙运动狂欢 (Active Fitness)</text>
+
+              <!-- 竞品点 1 -->
+              <g class="cursor-pointer group" onmouseenter="showTooltip(evt, '韶音 Shokz', '牢固占据专业运动防脱心智，但外观粗苯塑料感，知性办公场景违和')" onmouseleave="hideTooltip()">
+                <circle cx="120" cy="280" r="7" fill="#64748b" class="transition group-hover:scale-125"></circle>
+                <text x="120" y="300" fill="#94a3b8" font-size="11" text-anchor="middle" font-weight="500">韶音 Shokz</text>
+              </g>
+
+              <!-- 竞品点 2 -->
+              <g class="cursor-pointer group" onmouseenter="showTooltip(evt, 'Bose Ultra', '耳夹时尚感强，但价格高昂且重度依赖品牌光环，缺乏知识圈层归属感')" onmouseleave="hideTooltip()">
+                <circle cx="290" cy="250" r="7" fill="#64748b" class="transition group-hover:scale-125"></circle>
+                <text x="290" y="270" fill="#94a3b8" font-size="11" text-anchor="middle" font-weight="500">Bose Ultra</text>
+              </g>
+
+              <!-- 本品高亮英雄点 (带脉冲动画) -->
+              <g class="cursor-pointer group" onmouseenter="showTooltip(evt, 'SoundZen [本品]', '独占【知性心流 × 人文极简】绝对蓝海，成为思想者的工位声音伙伴')" onmouseleave="hideTooltip()">
+                <circle cx="310" cy="90" r="16" fill="#06b6d4" opacity="0.25" class="animate-ping"></circle>
+                <circle cx="310" cy="90" r="9" fill="#06b6d4" stroke="#ffffff" stroke-width="2.5"></circle>
+                <rect x="270" y="105" width="80" height="22" rx="4" fill="#06b6d4"></rect>
+                <text x="310" y="120" fill="#ffffff" font-size="11" font-weight="bold" text-anchor="middle">SoundZen</text>
+              </g>
+            </svg>
+
+            <!-- 动态 Tooltip 浮层 -->
+            <div id="matrix-tooltip" class="absolute pointer-events-none opacity-0 transition-opacity bg-slate-800 text-white p-2.5 rounded-lg text-xs shadow-xl border border-slate-700 max-w-[200px] z-50">
+              <div id="tooltip-title" class="font-bold text-cyan-400 mb-0.5"></div>
+              <div id="tooltip-desc" class="text-slate-300"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 象限解读与战略差异化 -->
+        <div class="lg:col-span-5 space-y-4">
+          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 font-mono">X 轴维度解析</h3>
+            <p class="text-sm text-slate-700 font-medium">横轴评估产品的美学哲学：从粗糙的工程级塑料参数堆砌，走向与 Moleskine、MacBook 同频的人文克制设计。</p>
+          </div>
+          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 font-mono">Y 轴维度解析</h3>
+            <p class="text-sm text-slate-700 font-medium">纵轴衡量核心使用场景的心智深度：从短时间的身体暴汗对抗，跃升为全天候高专注力的脑力沉浸。</p>
+          </div>
+          <div class="p-4 rounded-2xl bg-cyan-50/60 border border-cyan-200">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-cyan-800 mb-2 font-mono">本品蓝海制高点</h3>
+            <p class="text-sm text-cyan-950 font-medium leading-relaxed">SoundZen 跳出‘健身器材’红海，在‘知性心流’象限开辟独占真空区，重塑高端开放式耳机的价值锚点。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 模块三：三大差异化 Core Idea 提案矩阵 (Interactive Tabs) -->
+    <section class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm print-avoid-break">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        <div class="flex items-center space-x-2.5">
+          <span class="w-2.5 h-6 bg-amber-500 rounded-full"></span>
+          <h2 class="text-lg font-bold text-slate-900 tracking-tight">03 / 三大差异化 Core Idea 创意矩阵</h2>
+        </div>
+
+        <!-- 选项卡切换控制器 (no-print) -->
+        <div class="inline-flex p-1 rounded-xl bg-slate-100 no-print" role="tablist">
+          <button onclick="switchTab(0)" id="tab-btn-0" class="tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-900 bg-white shadow-sm transition">
+            概念 1：社会情绪共振
+          </button>
+          <button onclick="switchTab(1)" id="tab-btn-1" class="tab-btn px-4 py-1.5 rounded-lg text-xs font-medium text-slate-500 hover:text-slate-800 transition">
+            概念 2：产品力戏剧化
+          </button>
+          <button onclick="switchTab(2)" id="tab-btn-2" class="tab-btn px-4 py-1.5 rounded-lg text-xs font-medium text-slate-500 hover:text-slate-800 transition">
+            概念 3：圈层文化反叛
+          </button>
+        </div>
+      </div>
+
+      <!-- 概念内容面板容器 -->
+      <div id="tab-panels" class="space-y-6">
+
+        <!-- 概念 1 面板 -->
+        <div id="tab-panel-0" class="tab-pane block transition-opacity duration-300">
+          <div class="bg-gradient-to-br from-slate-900 to-indigo-950 rounded-2xl p-6 sm:p-8 text-white relative overflow-hidden mb-6 shadow-md">
+            <span class="inline-block px-3 py-1 rounded-full text-xs font-mono font-medium bg-indigo-500/20 text-indigo-300 border border-indigo-400/30 mb-3">
+              流派 01 · 社会情绪共振流 (Cultural & Emotional Resonance)
+            </span>
+            <h3 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white mb-2 font-serif">
+              “声入其境，耳畔有风。”
+            </h3>
+            <p class="text-sm text-indigo-200 font-light mb-4">副标：给深度思考者的全天候无感声学</p>
+            <p class="text-sm text-slate-300 max-w-2xl leading-relaxed">将耳机定位为思考者的沉静飞地。不割裂世界，只滤去喧嚣；让声音如微风拂过耳际，陪伴每一个灵感句号的诞生。</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200/80">
+              <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 font-mono">底层洞察支撑</h4>
+              <p class="text-sm text-slate-700 leading-relaxed">脑力劳动者最恐惧的不是没有音乐，而是耳道被生硬物理塞满后的烦躁与思维窒息。</p>
+            </div>
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200/80">
+              <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 font-mono">生活微观切片</h4>
+              <p class="text-sm text-slate-700 leading-relaxed">下午 3 点的独立咖啡馆，阳光穿过百叶窗。连续戴了 6 小时耳机，耳道依然清爽通透，敲下代码回车键的瞬间，同事轻声唤你的名字，你从容抬头微笑。</p>
+            </div>
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200/80">
+              <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 font-mono">情绪张力破局</h4>
+              <p class="text-sm text-slate-700 leading-relaxed">打破‘降噪真空感’与‘外界干扰’的两难，重构舒适与专注的和谐。</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 概念 2 面板 -->
+        <div id="tab-panel-1" class="tab-pane hidden transition-opacity duration-300">
+          <div class="bg-gradient-to-br from-slate-900 to-cyan-950 rounded-2xl p-6 sm:p-8 text-white relative overflow-hidden mb-6 shadow-md">
+            <span class="inline-block px-3 py-1 rounded-full text-xs font-mono font-medium bg-cyan-500/20 text-cyan-300 border border-cyan-400/30 mb-3">
+              流派 02 · 产品力戏剧化流 (Dramatized Product Superiority)
+            </span>
+            <h3 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white mb-2 font-serif">
+              “6.8 克的空气，装得下一整天的好奇心。”
+            </h3>
+            <p class="text-sm text-cyan-200 font-light mb-4">副标：羽感记忆钛丝架构与私密声盾</p>
+            <p class="text-sm text-slate-300 max-w-2xl leading-relaxed">将极致工程力转化为触手可及的轻盈奇观。单耳仅 6.8 克，反向声波抵消漏音 94%，带去物理级别的绝对确信。</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200/80">
+              <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 font-mono">底层洞察支撑</h4>
+              <p class="text-sm text-slate-700 leading-relaxed">人们对科技的最高评价从来不是‘功能强大’，而是‘好到感觉不到它的存在’。</p>
+            </div>
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200/80">
+              <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 font-mono">生活微观切片</h4>
+              <p class="text-sm text-slate-700 leading-relaxed">下班收拾背包摸向耳朵，才猛然惊觉耳机居然还戴在头上，音乐依然在空气中静静流淌。</p>
+            </div>
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200/80">
+              <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 font-mono">情绪张力破局</h4>
+              <p class="text-sm text-slate-700 leading-relaxed">把冰冷坚硬的钛合金，翻译成羽毛般温润的亲肤包裹感。</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 概念 3 面板 -->
+        <div id="tab-panel-2" class="tab-pane hidden transition-opacity duration-300">
+          <div class="bg-gradient-to-br from-slate-900 to-rose-950 rounded-2xl p-6 sm:p-8 text-white relative overflow-hidden mb-6 shadow-md">
+            <span class="inline-block px-3 py-1 rounded-full text-xs font-mono font-medium bg-rose-500/20 text-rose-300 border border-rose-400/30 mb-3">
+              流派 03 · 圈层文化反叛流 (Subculture & Maverick Rebellion)
+            </span>
+            <h3 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white mb-2 font-serif">
+              “不塞住耳朵，也不迎合噪音。”
+            </h3>
+            <p class="text-sm text-rose-200 font-light mb-4">副标：新一代知识游民的清醒反叛</p>
+            <p class="text-sm text-slate-300 max-w-2xl leading-relaxed">解构把世界粗暴区隔为‘我与孤岛’的传统降噪神话，主张以通透之躯直面现实，保持听觉的清醒与体面。</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200/80">
+              <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 font-mono">底层洞察支撑</h4>
+              <p class="text-sm text-slate-700 leading-relaxed">年轻一代知识工作者反感封闭自嗨的冷漠人设，渴望真实连接与开放式松弛。</p>
+            </div>
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200/80">
+              <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 font-mono">生活微观切片</h4>
+              <p class="text-sm text-slate-700 leading-relaxed">在机场贵宾厅脱下沉重的大耳罩，戴上 SoundZen。听着播客里的深度对谈，同时不错过登机广播的每一次低语。</p>
+            </div>
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200/80">
+              <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 font-mono">情绪张力破局</h4>
+              <p class="text-sm text-slate-700 leading-relaxed">用‘开放’反抗‘封闭’，用‘体面’替代‘隔绝’。</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 模块四：全链路 IMC 落地规划 (Action Framework) -->
+    <section class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm print-avoid-break">
+      <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center space-x-2.5">
+          <span class="w-2.5 h-6 bg-emerald-500 rounded-full"></span>
+          <h2 class="text-lg font-bold text-slate-900 tracking-tight">04 / 全链路 IMC 触点推进矩阵</h2>
+        </div>
+        <span class="text-xs text-slate-400 font-mono">ACTION FRAMEWORK</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
+        <!-- 阶段 1：预热 -->
+        <div class="bg-slate-50/80 rounded-2xl p-6 border border-slate-200/80 relative">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-mono font-bold text-slate-400">PHASE 01</span>
+            <span class="px-2 py-0.5 rounded text-xs font-medium bg-slate-200 text-slate-700">引爆好奇</span>
+          </div>
+          <h4 class="text-base font-bold text-slate-900 mb-2">发起《找回专注的 100 个小时》城市声音实验</h4>
+          <p class="text-xs text-slate-600 mb-4 leading-relaxed">联合知名独立书店与《单读》，邀请 50 位作家与学者盲测佩戴无标耳机，记录真实心流手记。</p>
+          <div class="pt-3 border-t border-slate-200 text-xs text-slate-500 space-y-1">
+            <div class="font-medium text-slate-700">核心触点：</div>
+            <p>微信公众号深度长文 + 播客专属定制对谈 + 小红书悬念开箱</p>
+          </div>
+        </div>
+
+        <!-- 阶段 2：爆发 -->
+        <div class="bg-indigo-50/50 rounded-2xl p-6 border border-indigo-200 relative">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-mono font-bold text-indigo-400">PHASE 02</span>
+            <span class="px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800">超级大事件</span>
+          </div>
+          <h4 class="text-base font-bold text-indigo-950 mb-2">发布品牌态度大片《风穿过耳道的瞬间》</h4>
+          <p class="text-xs text-indigo-900/80 mb-4 leading-relaxed">全网首发 4K 电影级人文短片，同步开启天猫超级品牌日，上线 30 天无忧心流试戴计划。</p>
+          <div class="pt-3 border-t border-indigo-200/80 text-xs text-indigo-800 space-y-1">
+            <div class="font-medium text-indigo-950">核心触点：</div>
+            <p>B站官方纪录片首发 + 科技媒体头条深度拆解 + 30城精品买手店快闪</p>
+          </div>
+        </div>
+
+        <!-- 阶段 3：发酵 -->
+        <div class="bg-slate-50/80 rounded-2xl p-6 border border-slate-200/80 relative">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-mono font-bold text-slate-400">PHASE 03</span>
+            <span class="px-2 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-800">社交长尾与转化</span>
+          </div>
+          <h4 class="text-base font-bold text-slate-900 mb-2">启动【SoundZen 思考者飞地】创作者社群计划</h4>
+          <p class="text-xs text-slate-600 mb-4 leading-relaxed">为忠实用户推送策展人甄选的高音质原创白噪音歌单，发起工位桌面美学搭配 UGC 挑战赛。</p>
+          <div class="pt-3 border-t border-slate-200 text-xs text-slate-500 space-y-1">
+            <div class="font-medium text-slate-700">核心触点：</div>
+            <p>小红书桌面改造话题 + 微信私域沉淀 + 会员专属金属刻字配件定制</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 页脚版权钢印 -->
+  <footer class="mt-12 py-8 border-t border-slate-200/80 text-center text-xs text-slate-400 space-y-1 font-mono">
+    <p>BrandPulse Workbench · 4A 品牌比稿与策略推演加速引擎</p>
+    <p class="font-semibold text-slate-500">WenSenLab_ ©文森策</p>
+  </footer>
+
+  <!-- Toast 提示框 -->
+  <div id="toast" class="fixed bottom-6 right-6 pointer-events-none opacity-0 transition-opacity duration-300 bg-slate-900 text-white px-4 py-2.5 rounded-xl shadow-2xl text-xs font-medium z-50 flex items-center space-x-2">
+    <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+    </svg>
+    <span id="toast-msg">已复制策略大纲到剪贴板</span>
+  </div>
+
+  <!-- 交互脚本 -->
+  <script>
+    // 选项卡切换
+    function switchTab(index) {
+      const panes = document.querySelectorAll('.tab-pane');
+      const btns = document.querySelectorAll('.tab-btn');
+
+      panes.forEach((pane, i) => {
+        if (i === index) {
+          pane.classList.remove('hidden');
+          pane.classList.add('block');
+        } else {
+          pane.classList.add('hidden');
+          pane.classList.remove('block');
+        }
+      });
+
+      btns.forEach((btn, i) => {
+        if (i === index) {
+          btn.className = 'tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-900 bg-white shadow-sm transition';
+        } else {
+          btn.className = 'tab-btn px-4 py-1.5 rounded-lg text-xs font-medium text-slate-500 hover:text-slate-800 transition';
+        }
+      });
+    }
+
+    // 四象限 Tooltip 悬停控制
+    const tooltip = document.getElementById('matrix-tooltip');
+    const tooltipTitle = document.getElementById('tooltip-title');
+    const tooltipDesc = document.getElementById('tooltip-desc');
+
+    function showTooltip(evt, title, desc) {
+      tooltipTitle.textContent = title;
+      tooltipDesc.textContent = desc;
+      tooltip.style.left = (evt.offsetX + 15) + 'px';
+      tooltip.style.top = (evt.offsetY - 20) + 'px';
+      tooltip.classList.remove('opacity-0');
+    }
+
+    function hideTooltip() {
+      tooltip.classList.add('opacity-0');
+    }
+
+    // 一键复制 Markdown 策略大纲
+    function copyMarkdownSummary() {
+      const summaryText = `### SoundZen 品牌比稿策略大纲
+- 破局楔子：从运动外设跃迁至知性心流声音飞地
+- 核心概念：声入其境，耳畔有风
+- 四象限定位：独占知性心流与极简美学蓝海
+- 交付物：BrandPulse 交互单页看板已生成`;
+      navigator.clipboard.writeText(summaryText).then(() => {
+        showToast('策略大纲已成功复制到剪贴板！');
+      }).catch(err => {
+        showToast('复制失败，请手动选取复制');
+      });
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toast-msg');
+      toastMsg.textContent = msg;
+      toast.classList.remove('opacity-0');
+      setTimeout(() => {
+        toast.classList.add('opacity-0');
+      }, 2500);
+    }
+  </script>
+</body>
+</html>
