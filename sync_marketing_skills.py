@@ -4,12 +4,12 @@
 wensen-marketing-skills 专区自动化备份与多技能同步管理工具
 WenSenLab · 文森策 出品
 
-功能概述：
-1. 自动比对本地中央技能库 (~/.skills-manager/skills/) 与备份仓库的差异与版本；
-2. 智能增量备份：检测文件变动（SHA-256 内容级校验），同步文件并自动维护专区 README.md 索引表格；
-3. 全自动 Git 提交与推送：生成语义化 Commit Message 并同步到 GitHub (wensenlab/wensen-marketing-skills)；
-4. 统一管理：通过 skills-manifest.json 清单管理专区内多个营销类 skills，支持一键 add/remove/discover；
-5. 多模态支持：支持单次同步、--dry-run 预览、--watch 实时监听防抖备份，以及 --install-daemon 后台静默守护。
+核心特性：
+1. 采用 macOS 原生 LaunchAgent + WatchPaths 机制，本地文件一旦保存修改，系统底层秒级自动触发备份与推送；
+2. 无常驻后台进程，非修改期间 CPU 0%、内存 0MB，轻量无感；
+3. SHA-256 内容级指纹比对，自动过滤 .DS_Store 等临时垃圾，无实质修改绝不产生冗余提交；
+4. 自动解析提取 Frontmatter 版本与元数据，动态生成语义化 Commit Message 并同步维护专区 README 索引矩阵；
+5. 支持 skills-manifest.json 统一管理，支持一键 add/remove/discover 扩充新营销技能。
 """
 
 import os
@@ -24,14 +24,21 @@ import subprocess
 from pathlib import Path
 from datetime import datetime
 
+# 补全 PATH 环境变量确保 Git 等命令在 launchd 各种环境下均可执行
+os.environ["PATH"] = "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:" + os.environ.get("PATH", "")
+
 # 基础默认路径
 SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_DIR = SCRIPT_DIR
 DEFAULT_SOURCE_ROOT = Path.home() / ".skills-manager" / "skills"
 MANIFEST_PATH = REPO_DIR / "skills-manifest.json"
 README_PATH = REPO_DIR / "README.md"
-PLIST_LABEL = "com.wensenlab.marketing-skills-sync"
+
+# 统一遵循 ~/Library/LaunchAgents/ 下 com.wensenlab.* 命名体系
+PLIST_LABEL = "com.wensenlab.marketing-skills.backup"
 PLIST_PATH = Path.home() / "Library" / "LaunchAgents" / f"{PLIST_LABEL}.plist"
+STDOUT_LOG = Path("/tmp/com.wensenlab.marketing-skills.backup.out")
+STDERR_LOG = Path("/tmp/com.wensenlab.marketing-skills.backup.err")
 
 # 忽略的文件和目录
 IGNORE_NAMES = {
@@ -62,8 +69,6 @@ def parse_frontmatter(skill_md: Path) -> dict:
     
     yaml_block = match.group(1)
     data = {}
-    
-    # 基础轻量解析
     current_key = None
     multiline_buf = []
     
@@ -108,7 +113,6 @@ def compute_skill_signature(skill_dir: Path) -> dict[str, str]:
         return signatures
     
     for root, dirs, files in os.walk(skill_dir):
-        # 排除忽略目录
         dirs[:] = [d for d in dirs if d not in IGNORE_NAMES and not d.startswith(".")]
         for file in files:
             if file in IGNORE_NAMES or file.startswith(".") or any(file.endswith(ext) for ext in IGNORE_EXTS):
@@ -128,7 +132,6 @@ def load_manifest() -> dict:
         except Exception as e:
             print(f"[警告] 读取 manifest 失败: {e}，将使用初始模板")
             
-    # 默认初始配置
     default_manifest = {
         "version": "1.0.0",
         "repo": "wensenlab/wensen-marketing-skills",
@@ -161,10 +164,7 @@ def get_source_root(manifest: dict) -> Path:
 
 
 def sync_skill_directory(src_dir: Path, dest_dir: Path, dry_run: bool = False) -> tuple[int, int, int]:
-    """
-    镜像同步单个技能目录：
-    返回 (新增/修改文件数, 删除文件数, 保持不变数)
-    """
+    """镜像同步单个技能目录：返回 (新增/修改数, 删除数, 保持不变数)"""
     src_sigs = compute_skill_signature(src_dir)
     dest_sigs = compute_skill_signature(dest_dir)
     
@@ -185,7 +185,7 @@ def sync_skill_directory(src_dir: Path, dest_dir: Path, dry_run: bool = False) -
         else:
             unchanged_count += 1
             
-    # 2. 删除目标目录中多余的文件（本地已删除的文件）
+    # 2. 删除目标目录中多余的文件
     for rel_path in dest_sigs:
         if rel_path not in src_sigs:
             deleted_count += 1
@@ -207,15 +207,11 @@ def sync_skill_directory(src_dir: Path, dest_dir: Path, dry_run: bool = False) -
 
 
 def update_readme_matrix(skills_meta: list[dict], dry_run: bool = False) -> bool:
-    """
-    动态更新 README.md 中的技能矩阵表格
-    """
+    """动态更新 README.md 中的技能矩阵表格"""
     if not README_PATH.is_file():
         return False
         
     content = read_text(README_PATH)
-    
-    # 生成 Markdown 表格
     lines = [
         "| 技能目录 | 技能定位与核心价值 | 适用场景与触发词 | 版本 | 状态 |",
         "| :--- | :--- | :--- | :--- | :--- |"
@@ -227,7 +223,6 @@ def update_readme_matrix(skills_meta: list[dict], dry_run: bool = False) -> bool
         desc = s.get("description", "品牌营销策略技能")
         category = s.get("category", "营销策略")
         
-        # 简化描述供表格排版（取前 120 字）
         short_desc = desc.replace("\n", " ").strip()
         if len(short_desc) > 130:
             short_desc = short_desc[:127] + "..."
@@ -237,15 +232,12 @@ def update_readme_matrix(skills_meta: list[dict], dry_run: bool = False) -> bool
         lines.append(line)
         
     new_table = "\n".join(lines)
-    
-    # 正则替换表格区域
     pattern = r"(## 📂 专区技能矩阵清单 \(Skills Matrix\)\s*\n\s*\n)(.*?)(?=\n---\n|\Z)"
     match = re.search(pattern, content, re.DOTALL)
     if match:
         header = match.group(1)
         updated_content = content[:match.start()] + header + new_table + "\n" + content[match.end():]
     else:
-        # 如果未找到区域，直接插入到合适位置
         updated_content = content + "\n\n## 📂 专区技能矩阵清单 (Skills Matrix)\n\n" + new_table + "\n"
         
     if updated_content != content:
@@ -262,30 +254,26 @@ def git_commit_and_push(changed_skills: list[str], dry_run: bool = False) -> boo
         return True
         
     try:
-        # 1. git add
         subprocess.run(["git", "add", "skills/", "skills-manifest.json", "README.md", "sync_marketing_skills.py"], cwd=REPO_DIR, check=True)
-        
-        # 2. 检查是否有暂存的更改
         res = subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=REPO_DIR)
         if res.returncode == 0:
             print("[Git] 无暂存更改，无需提交。")
             return True
             
-        # 3. 构造语义化 Commit Message
+        now_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         if len(changed_skills) == 1:
-            commit_msg = f"sync({changed_skills[0]}): 自动同步技能最新版本与改动"
+            commit_msg = f"Auto-backup: 同步 {changed_skills[0]} 最新改动 ({now_time})"
         elif len(changed_skills) > 1:
             joined = ", ".join(changed_skills[:3])
             if len(changed_skills) > 3:
                 joined += f" 等 {len(changed_skills)} 个技能"
-            commit_msg = f"sync(skills): 批量同步 {joined} 最新版本"
+            commit_msg = f"Auto-backup: 批量同步 {joined} ({now_time})"
         else:
-            commit_msg = "sync(manifest): 更新专区技能清单与索引"
+            commit_msg = f"Auto-backup: 更新专区清单与索引 ({now_time})"
             
         subprocess.run(["git", "commit", "-m", commit_msg], cwd=REPO_DIR, check=True)
         print(f"[Git] 成功提交: {commit_msg}")
         
-        # 4. git push
         print("[Git] 正在推送到 GitHub 远程仓库 (origin/main)...")
         subprocess.run(["git", "push", "origin", "main"], cwd=REPO_DIR, check=True)
         print("[Git] ✓ 成功推送至 GitHub！")
@@ -295,8 +283,98 @@ def git_commit_and_push(changed_skills: list[str], dry_run: bool = False) -> boo
         return False
 
 
-def run_sync(target_skill: str = None, dry_run: bool = False) -> bool:
+def get_all_watch_paths(manifest: dict) -> list[str]:
+    """生成所有纳管技能的精确监控路径列表"""
+    source_root = get_source_root(manifest)
+    paths = []
+    
+    for item in manifest.get("skills", []):
+        name = item["name"]
+        skill_dir = source_root / name
+        if skill_dir.is_dir():
+            paths.append(str(skill_dir))
+            skill_md = skill_dir / "SKILL.md"
+            if skill_md.is_file():
+                paths.append(str(skill_md))
+            for sub in ["references", "evals", "scripts", "assets"]:
+                subdir = skill_dir / sub
+                if subdir.is_dir():
+                    paths.append(str(subdir))
+                    
+    # 额外监控清单本身
+    paths.append(str(MANIFEST_PATH))
+    return sorted(list(set(paths)))
+
+
+def ensure_launch_agent(manifest: dict = None, force_reload: bool = False) -> bool:
+    """
+    自动对齐并安装 macOS LaunchAgent 自动化守护：
+    基于原生 WatchPaths 监听，本地文件保存后秒级触发，零常驻进程，零 CPU 占用。
+    """
+    if manifest is None:
+        manifest = load_manifest()
+        
+    watch_paths = get_all_watch_paths(manifest)
+    watch_xml = "\n".join([f"        <string>{p}</string>" for p in watch_paths])
+    python_bin = "/usr/bin/python3"
+    script_path = str(REPO_DIR / "sync_marketing_skills.py")
+    
+    plist_content = f"""<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>{PLIST_LABEL}</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>{python_bin}</string>
+        <string>{script_path}</string>
+        <string>sync</string>
+    </array>
+    <key>WatchPaths</key>
+    <array>
+{watch_xml}
+    </array>
+    <key>ThrottleInterval</key>
+    <integer>3</integer>
+    <key>RunAtLoad</key>
+    <false/>
+    <key>StandardOutPath</key>
+    <string>{STDOUT_LOG}</string>
+    <key>StandardErrorPath</key>
+    <string>{STDERR_LOG}</string>
+</dict>
+</plist>
+"""
+    # 检查是否已有配置且内容一致
+    is_updated = False
+    if PLIST_PATH.is_file():
+        old_content = read_text(PLIST_PATH)
+        if old_content.strip() != plist_content.strip():
+            is_updated = True
+    else:
+        is_updated = True
+        
+    if is_updated or force_reload:
+        PLIST_PATH.parent.mkdir(parents=True, exist_ok=True)
+        write_text(PLIST_PATH, plist_content)
+        try:
+            subprocess.run(["launchctl", "unload", str(PLIST_PATH)], capture_output=True)
+            subprocess.run(["launchctl", "load", str(PLIST_PATH)], check=True)
+            print(f"[LaunchAgent] ✓ 自动化守护已就绪 (监控 {len(watch_paths)} 处路径)")
+            return True
+        except Exception as e:
+            print(f"[LaunchAgent 警告] 激活失败: {e}")
+            return False
+            
+    return True
+
+
+def run_sync(target_skill: str = None, dry_run: bool = False, delay: int = 2) -> bool:
     """执行同步主流程"""
+    if delay > 0 and not dry_run:
+        time.sleep(delay)
+        
     manifest = load_manifest()
     source_root = get_source_root(manifest)
     skills_list = manifest.get("skills", [])
@@ -305,10 +383,7 @@ def run_sync(target_skill: str = None, dry_run: bool = False) -> bool:
         print(f"[错误] 本地技能权威源路径不存在: {source_root}")
         return False
         
-    print(f"=== WenSenLab 营销技能专区同步巡检 ===")
-    print(f"本地权威源: {source_root}")
-    print(f"备份仓库:   {REPO_DIR}")
-    print(f"纳管技能数: {len(skills_list)}\n")
+    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] === WenSenLab 营销技能专区自动同步巡检 ===")
     
     changed_skills = []
     skills_meta = []
@@ -325,7 +400,6 @@ def run_sync(target_skill: str = None, dry_run: bool = False) -> bool:
             print(f"[-] [缺失] 本地未找到技能目录: {src_skill_dir}")
             continue
             
-        # 解析元数据
         fm = parse_frontmatter(src_skill_dir / "SKILL.md")
         version = fm.get("metadata", {}).get("version") if isinstance(fm.get("metadata"), dict) else fm.get("version", "v1.0.0")
         desc = fm.get("description", item.get("category", "营销策略分析"))
@@ -338,7 +412,6 @@ def run_sync(target_skill: str = None, dry_run: bool = False) -> bool:
         }
         skills_meta.append(meta)
         
-        # 执行文件比对与同步
         mod_count, del_count, same_count = sync_skill_directory(src_skill_dir, dest_skill_dir, dry_run=dry_run)
         
         if mod_count > 0 or del_count > 0:
@@ -348,32 +421,46 @@ def run_sync(target_skill: str = None, dry_run: bool = False) -> bool:
         else:
             print(f"[✓] [保持最新] {name} ({version}): {same_count} 个文件完全一致")
             
-    # 刷新 README 表格
     readme_updated = update_readme_matrix(skills_meta, dry_run=dry_run)
     if readme_updated:
         print("[✓] README.md 专区技能索引表格已同步更新")
         
-    # 保存 manifest
     if changed_skills and not dry_run:
         save_manifest(manifest)
         
-    # Git 提交与推送
+    # 确保 LaunchAgent 监控路径与 manifest 保持最新
+    if not dry_run:
+        ensure_launch_agent(manifest)
+        
     if changed_skills or readme_updated:
-        print(f"\n检测到 {len(changed_skills)} 个技能变动，准备提交备份...")
+        print(f"检测到 {len(changed_skills)} 个技能变动，正在提交 GitHub 备份...")
         return git_commit_and_push(changed_skills, dry_run=dry_run)
     else:
-        print("\n[OK] 所有营销技能均已是最新状态，无需重复推送。")
+        print("[OK] 所有营销技能均已是最新状态，无需重复推送。")
         return True
 
 
 def run_status():
-    """查看当前专区纳管技能状态"""
+    """查看当前专区纳管技能状态与自动化守护运行状况"""
     manifest = load_manifest()
     source_root = get_source_root(manifest)
     skills_list = manifest.get("skills", [])
     
-    print(f"=== wensen-marketing-skills 专区纳管清单 ({len(skills_list)} 个技能) ===\n")
-    print(f"{'技能名称':<28} | {'版本':<8} | {'类别':<10} | {'同步状态'}")
+    agent_status = "未激活"
+    if PLIST_PATH.is_file():
+        res = subprocess.run(["launchctl", "list", PLIST_LABEL], capture_output=True, text=True)
+        if res.returncode == 0:
+            agent_status = "🟢 正在后台监听 (自动同步已就绪)"
+        else:
+            agent_status = "🟡 配置文件存在但未加载"
+    else:
+        agent_status = "🔴 未安装"
+        
+    print(f"=== wensen-marketing-skills 专区纳管状态 ===")
+    print(f"自动化守护: {agent_status}")
+    print(f"监控配置文件: {PLIST_PATH}")
+    print(f"日志输出位置: {STDOUT_LOG}\n")
+    print(f"{'技能名称':<28} | {'版本':<8} | {'类别':<10} | {'本地/线上对齐状态'}")
     print("-" * 75)
     
     for item in skills_list:
@@ -397,13 +484,13 @@ def run_status():
             if src_sig == dest_sig:
                 status = "✓ 已同步最新"
             else:
-                status = "🔄 本地存在未提交更新"
+                status = "🔄 本地存在未提交改动"
                 
         print(f"{name:<28} | {ver:<8} | {category:<10} | {status}")
 
 
 def cmd_add_skill(skill_name: str, category: str = "营销策略"):
-    """将本地某个 skill 加入本专区纳管清单并执行同步"""
+    """将本地某个 skill 加入本专区纳管清单，自动更新 LaunchAgent 监控并同步"""
     manifest = load_manifest()
     source_root = get_source_root(manifest)
     src_dir = source_root / skill_name
@@ -412,10 +499,9 @@ def cmd_add_skill(skill_name: str, category: str = "营销策略"):
         print(f"[错误] 在本地权威源 {source_root} 下未找到技能 '{skill_name}'")
         sys.exit(1)
         
-    # 检查是否已在清单中
     existing = [s for s in manifest.get("skills", []) if s["name"] == skill_name]
     if existing:
-        print(f"[提示] 技能 '{skill_name}' 已在纳管清单中，无需重复添加。")
+        print(f"[提示] 技能 '{skill_name}' 已在纳管清单中。")
     else:
         manifest["skills"].append({
             "name": skill_name,
@@ -424,14 +510,14 @@ def cmd_add_skill(skill_name: str, category: str = "营销策略"):
             "added_at": datetime.now().strftime("%Y-%m-%d")
         })
         save_manifest(manifest)
-        print(f"[成功] 技能 '{skill_name}' 已添加至营销技能清单。")
+        print(f"[成功] 技能 '{skill_name}' 已添加至营销专区清单。")
         
-    # 立即执行一次同步
-    run_sync(target_skill=skill_name)
+    ensure_launch_agent(manifest, force_reload=True)
+    run_sync(target_skill=skill_name, delay=0)
 
 
 def cmd_remove_skill(skill_name: str):
-    """从专区清单中移除某个 skill"""
+    """从专区清单中移除某个 skill 并刷新监控配置"""
     manifest = load_manifest()
     skills = manifest.get("skills", [])
     new_skills = [s for s in skills if s["name"] != skill_name]
@@ -442,8 +528,8 @@ def cmd_remove_skill(skill_name: str):
         
     manifest["skills"] = new_skills
     save_manifest(manifest)
-    print(f"[成功] 技能 '{skill_name}' 已从清单中移除。")
-    print(f"[提示] 仓库中已备份的 skills/{skill_name}/ 目录已保留，如需彻底删除可手动执行 git rm。")
+    ensure_launch_agent(manifest, force_reload=True)
+    print(f"[成功] 技能 '{skill_name}' 已从清单中移除，监控已刷新。")
 
 
 def cmd_discover():
@@ -466,7 +552,6 @@ def cmd_discover():
         name = fm.get("name", child.name)
         desc = fm.get("description", "")
         
-        # 关键词匹配
         kw_pattern = r"(营销|策略|品牌|比稿|广告|文案|自媒体|策划|商业|定位|传播|marketing|brand|strategy|copywriting)"
         is_candidate = re.search(kw_pattern, name, re.IGNORECASE) or re.search(kw_pattern, desc, re.IGNORECASE)
         
@@ -481,154 +566,37 @@ def cmd_discover():
     print("  python3 sync_marketing_skills.py add <技能名称>")
 
 
-def run_watch(interval: int = 5):
-    """文件变更监听守护模式（轮询 + SHA 防抖）"""
-    manifest = load_manifest()
-    source_root = get_source_root(manifest)
-    skills = [s["name"] for s in manifest.get("skills", [])]
-    
-    print(f"=== 启动营销技能实时监听守护模式 (防抖间隔: {interval}s) ===")
-    print(f"正在监听的技能: {', '.join(skills)}")
-    print("按 Ctrl+C 可退出监听。\n")
-    
-    last_snapshots = {}
-    for name in skills:
-        src_dir = source_root / name
-        if src_dir.is_dir():
-            last_snapshots[name] = compute_skill_signature(src_dir)
-            
-    while True:
-        try:
-            time.sleep(interval)
-            changed = []
-            for name in skills:
-                src_dir = source_root / name
-                if not src_dir.is_dir():
-                    continue
-                current_sig = compute_skill_signature(src_dir)
-                if current_sig != last_snapshots.get(name):
-                    changed.append(name)
-                    last_snapshots[name] = current_sig
-                    
-            if changed:
-                now_str = datetime.now().strftime("%H:%M:%S")
-                print(f"\n[{now_str}] 检测到技能文件变动: {', '.join(changed)}，触发自动备份...")
-                run_sync()
-        except KeyboardInterrupt:
-            print("\n[退出] 实时监听守护已停止。")
-            break
-
-
-def cmd_install_daemon():
-    """安装 macOS LaunchAgent 后台静默守护定时任务"""
-    python_bin = sys.executable
-    script_path = str(Path(__file__).resolve())
-    log_path = Path.home() / "Library" / "Logs" / "wensen_marketing_skills_sync.log"
-    
-    plist_content = f"""<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>Label</key>
-    <string>{PLIST_LABEL}</string>
-    <key>ProgramArguments</key>
-    <array>
-        <string>{python_bin}</string>
-        <string>{script_path}</string>
-        <string>sync</string>
-    </array>
-    <key>StartInterval</key>
-    <integer>1800</integer>
-    <key>RunAtLoad</key>
-    <true/>
-    <key>StandardOutPath</key>
-    <string>{log_path}</string>
-    <key>StandardErrorPath</key>
-    <string>{log_path}</string>
-</dict>
-</plist>
-"""
-    PLIST_PATH.parent.mkdir(parents=True, exist_ok=True)
-    write_text(PLIST_PATH, plist_content)
-    
-    try:
-        subprocess.run(["launchctl", "unload", str(PLIST_PATH)], capture_output=True)
-        subprocess.run(["launchctl", "load", str(PLIST_PATH)], check=True)
-        print(f"[成功] macOS 后台守护已安装并激活！")
-        print(f"• 触发频率: 每 30 分钟静默增量巡检一次")
-        print(f"• 运行日志: {log_path}")
-        print(f"• 卸载命令: python3 {Path(__file__).name} --uninstall-daemon")
-    except Exception as e:
-        print(f"[错误] 激活 LaunchAgent 失败: {e}")
-
-
-def cmd_uninstall_daemon():
-    """卸载 macOS LaunchAgent 后台守护"""
-    if PLIST_PATH.is_file():
-        subprocess.run(["launchctl", "unload", str(PLIST_PATH)], capture_output=True)
-        PLIST_PATH.unlink(missing_ok=True)
-        print(f"[成功] macOS 后台守护任务已卸载并清理。")
-    else:
-        print(f"[提示] 未找到已安装的后台守护任务。")
-
-
 def main():
     parser = argparse.ArgumentParser(
         description="WenSenLab · 营销与商业策略技能自动化备份与统一管理中枢",
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
-常用示例:
-  python3 sync_marketing_skills.py                     # 执行全量增量检查与备份同步
-  python3 sync_marketing_skills.py status              # 查看专区纳管技能及同步状态
-  python3 sync_marketing_skills.py add marketing-council  # 新增一个营销类技能并立即同步
-  python3 sync_marketing_skills.py discover            # 自动发现本地候选营销类技能
-  python3 sync_marketing_skills.py --watch             # 开启终端前台实时监听（保存即自动备份）
-  python3 sync_marketing_skills.py --install-daemon    # 一键注册 macOS 后台守护（每 30 分钟无感巡检）
-        """
+        formatter_class=argparse.RawDescriptionHelpFormatter
     )
     
-    # 选项
     parser.add_argument("--dry-run", action="store_true", help="预览变动，不实际修改文件或提交 Git")
-    parser.add_argument("--watch", action="store_true", help="启动前台实时监听模式，文件改动防抖后自动备份")
-    parser.add_argument("--install-daemon", action="store_true", help="注册 macOS LaunchAgent 后台每 30 分钟自动备份")
-    parser.add_argument("--uninstall-daemon", action="store_true", help="卸载 macOS LaunchAgent 后台任务")
+    parser.add_argument("--setup-daemon", action="store_true", help="强制重新安装/激活 macOS LaunchAgent 自动化守护")
     
-    # 子命令
     subparsers = parser.add_subparsers(dest="subcommand", help="支持的子命令")
     
-    # sync
     p_sync = subparsers.add_parser("sync", help="执行同步 (默认动作)")
     p_sync.add_argument("--skill", "-s", help="只同步指定名称的技能")
     
-    # status
-    subparsers.add_parser("status", help="查看所有纳管技能的同步状态")
+    subparsers.add_parser("status", help="查看所有纳管技能的同步状态与自动化守护情况")
     
-    # add
     p_add = subparsers.add_parser("add", help="将本地新技能添加至营销专区清单")
     p_add.add_argument("name", help="技能名称 (对应 ~/.skills-manager/skills/ 下的目录名)")
     p_add.add_argument("--category", "-c", default="营销策略", help="分类标签 (默认: 营销策略)")
     
-    # remove
     p_rm = subparsers.add_parser("remove", help="从专区清单中移除技能")
     p_rm.add_argument("name", help="技能名称")
     
-    # discover
     subparsers.add_parser("discover", help="扫描本地所有可能属于营销类的技能")
     
     args = parser.parse_args()
     
-    # 优先处理高级控制选项
-    if args.install_daemon:
-        cmd_install_daemon()
-        return
-    if args.uninstall_daemon:
-        cmd_uninstall_daemon()
-        return
-    if args.watch:
-        run_watch()
+    if args.setup_daemon:
+        ensure_launch_agent(force_reload=True)
         return
         
-    # 分流子命令
     if args.subcommand == "status":
         run_status()
     elif args.subcommand == "add":
@@ -638,9 +606,8 @@ def main():
     elif args.subcommand == "discover":
         cmd_discover()
     else:
-        # 默认执行 sync
         target = getattr(args, "skill", None)
-        run_sync(target_skill=target, dry_run=args.dry_run)
+        run_sync(target_skill=target, dry_run=args.dry_run, delay=0)
 
 
 if __name__ == "__main__":
