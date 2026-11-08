@@ -135,7 +135,7 @@ def load_manifest() -> dict:
     default_manifest = {
         "version": "1.0.0",
         "repo": "wensenlab/wensen-marketing-skills",
-        "source_root": str(DEFAULT_SOURCE_ROOT),
+        "source_root": "~/.skills-manager/skills",
         "updated_at": datetime.now().isoformat(),
         "skills": [
             {
@@ -151,15 +151,20 @@ def load_manifest() -> dict:
 
 
 def save_manifest(manifest: dict) -> None:
-    """保存纳管清单"""
+    """保存纳管清单（自动保证 source_root 脱敏为 ~ 相对路径）"""
     manifest["updated_at"] = datetime.now().isoformat()
+    if "source_root" in manifest:
+        raw_sr = str(manifest["source_root"])
+        home_str = str(Path.home())
+        if raw_sr.startswith(home_str):
+            manifest["source_root"] = "~" + raw_sr[len(home_str):]
     write_text(MANIFEST_PATH, json.dumps(manifest, ensure_ascii=False, indent=2) + "\n")
 
 
 def get_source_root(manifest: dict) -> Path:
     """解析本地技能源目录"""
-    raw_path = manifest.get("source_root", str(DEFAULT_SOURCE_ROOT))
-    expanded = Path(os.path.expanduser(raw_path)).resolve()
+    raw_path = manifest.get("source_root", "~/.skills-manager/skills")
+    expanded = Path(os.path.expanduser(str(raw_path))).resolve()
     return expanded
 
 
@@ -206,39 +211,193 @@ def sync_skill_directory(src_dir: Path, dest_dir: Path, dry_run: bool = False) -
     return modified_count, deleted_count, unchanged_count
 
 
+# 21 个营销技能的“任务直驱（动词+宾语）”业务矩阵映射
+SKILL_ACTION_MAP = {
+    # 1. 商业策略与定位破局
+    "brand-strategy-analyst": {
+        "module": "1. 🎯 商业策略与定位破局 (Strategy & Positioning)",
+        "action": "搞定位 / 定战略",
+        "solve": "4A 级品牌商业定位、张力洞察与定位四象限差异化推演",
+        "triggers": "品牌定位分析、定位四象限、比稿大纲、推导 Brand Positioning"
+    },
+    "value-proposition-designer": {
+        "module": "1. 🎯 商业策略与定位破局 (Strategy & Positioning)",
+        "action": "理 PMF / 价值主张",
+        "solve": "商业价值主张画布与 PMF 梳理，击穿自嗨，理清客户痛点与解法匹配",
+        "triggers": "价值主张画布、推导 PMF、客户任务与痛点收益、卖点翻译"
+    },
+    "competitor-teardown-specialist": {
+        "module": "1. 🎯 商业策略与定位破局 (Strategy & Positioning)",
+        "action": "拆竞品 / 找反切",
+        "solve": "竞品商业攻防深度拆解与破局反切，锁定强项中的固有弱点与市场空白",
+        "triggers": "竞品分析、竞品攻防、反切定位、找竞品弱点、寻找市场空白"
+    },
+    "reverse-brief-translator": {
+        "module": "1. 🎯 商业策略与定位破局 (Strategy & Positioning)",
+        "action": "转 Brief / 防扯皮",
+        "solve": "口头零散需求与客户微信语音秒转 4A 工业级标准工作 Brief",
+        "triggers": "客户需求整理、写反向 Brief、梳理工作 Brief、写需求确认函"
+    },
+
+    # 2. 整合营销与创意大案
+    "imc-campaign-architect": {
+        "module": "2. 💡 整合营销与创意大案 (IMC & Creative Campaigns)",
+        "action": "排战役 / 搞 IMC",
+        "solve": "4A 级全案整合营销战役策划（全链路 AIPL + 节点推进排期 + 渠道预算）",
+        "triggers": "整合营销策划（IMC）、Campaign方案大纲、新品上市战役、大促排期"
+    },
+    "creative-campaign-producer": {
+        "module": "2. 💡 整合营销与创意大案 (IMC & Creative Campaigns)",
+        "action": "磨分镜 / 制大片",
+        "solve": "商业创意总监与广告/短视频脚本制片工场（含 AI 分镜生图提示词）",
+        "triggers": "商业广告脚本、TVC 分镜剧本、30-60秒爆款短视频、快闪装置策划"
+    },
+    "pitch-deck-storyteller": {
+        "module": "2. 💡 整合营销与创意大案 (IMC & Creative Campaigns)",
+        "action": "理 PPT / 写讲稿",
+        "solve": "4A 级商业比稿提案大纲与逐页讲稿架构（15-20 页骨架 + 客户提问防守）",
+        "triggers": "商业比稿提案大纲、PPT 逻辑架构、逐页口播讲稿、预判客户提问"
+    },
+    "brand-pulse-workbench": {
+        "module": "2. 💡 整合营销与创意大案 (IMC & Creative Campaigns)",
+        "action": "跑比稿 / 搓看板",
+        "solve": "品牌比稿与策略洞察自动化加速器（单文件自适应 Generative UI 交互看板）",
+        "triggers": "品牌比稿、策略推演、比稿看板、BrandPulse 页面、交互式比稿画布"
+    },
+    "brand-story-miner": {
+        "module": "2. 💡 整合营销与创意大案 (IMC & Creative Campaigns)",
+        "action": "讲故事 / 挖叙事",
+        "solve": "品牌故事挖掘与深度叙事工场（社会学神话、创始人心理冲突与时代情绪）",
+        "triggers": "品牌故事、创始人故事、官网关于我们、品牌精神内核、品牌宣言"
+    },
+    "brand-slogan-studio": {
+        "module": "2. 💡 整合营销与创意大案 (IMC & Creative Campaigns)",
+        "action": "憋口号 / 定 Slogan",
+        "solve": "品牌超级口号与记忆钉发生器（音律学平仄对仗 + 五维抗遗忘压力测试）",
+        "triggers": "品牌口号、Slogan、广告语、超级记忆钉、品牌主张"
+    },
+
+    # 3. 破圈事件与跨界增长
+    "co-branding-ip-strategist": {
+        "module": "3. 💥 破圈事件与跨界增长 (Buzz & Growth Stunts)",
+        "action": "搞联名 / 挑 IP",
+        "solve": "跨界联名与品牌 IP 合作策划（文化资产匹配度打分与破圈合作方案）",
+        "triggers": "跨界联名、IP 合作策划、品牌联名筛选、联名方案大纲"
+    },
+    "pop-up-stunt-producer": {
+        "module": "3. 💥 破圈事件与跨界增长 (Buzz & Growth Stunts)",
+        "action": "办快闪 / 做大事件",
+        "solve": "社交破圈大事件与沉浸式快闪策划（空间体验设计与社交自发传播工程）",
+        "triggers": "线下快闪策划、公关大事件、快闪店方案、空间互动体验、社交打卡"
+    },
+    "live-promo-showrunner": {
+        "module": "3. 💥 破圈事件与跨界增长 (Buzz & Growth Stunts)",
+        "action": "冲直播 / 组货盘",
+        "solve": "电商大促与直播带货制片（货盘组合机制、直播节奏控场与转化心理学）",
+        "triggers": "电商大促直播、直播脚本编排、货盘机制设计、直播间促单策略"
+    },
+    "event-speech-scripter": {
+        "module": "3. 💥 破圈事件与跨界增长 (Buzz & Growth Stunts)",
+        "action": "写主持 / 润致辞",
+        "solve": "商业活动主持串词与高管致辞润色（破冰开场金句 + 有格局领导发言）",
+        "triggers": "写主持词、活动串词、主持脚本、领导致辞、祝酒词、发布会开场"
+    },
+
+    # 4. 社媒抓手与爆款内容
+    "creative-hook-generator": {
+        "module": "4. ✍️ 社媒抓手与爆款内容 (Social Content & Visuals)",
+        "action": "抓眼球 / 起标题",
+        "solve": "社媒爆点抓手与互动文案发生器（5 大破局视角立体发散，拒绝焦虑恐吓）",
+        "triggers": "起标题、爆款标题、社媒抓手（Hook）、开头 3 秒钩子、封面文案"
+    },
+    "scene-selling-point-matrix": {
+        "module": "4. ✍️ 社媒抓手与爆款内容 (Social Content & Visuals)",
+        "action": "切场景 / 写微文",
+        "solve": "多场景卖点穷举与生活切片文案机（8 大微情绪生活场景碰撞，击穿防御）",
+        "triggers": "场景卖点穷举、卖点生活化转译、小红书微场景文案、朋友圈产品文案"
+    },
+    "social-card-maker": {
+        "module": "4. ✍️ 社媒抓手与爆款内容 (Social Content & Visuals)",
+        "action": "做卡片 / 调审美",
+        "solve": "营销人专属的高审美社媒卡片交互工场（Generative UI 单文件实时改字/导出）",
+        "triggers": "金句卡片、观点卡片、朋友圈/即刻分享图、可调样式卡片页"
+    },
+
+    # 5. 合规风控与复盘汇报
+    "ad-law-compliance-guard": {
+        "module": "5. 🛡️ 合规风控与复盘汇报 (Risk Guard & Executive Recap)",
+        "action": "排极限 / 换平替",
+        "solve": "新广告法极限词排雷与审美平替改写（标出风险依据 + 独家提供 3 套知性平替）",
+        "triggers": "广告法检查、违禁词检测、极限词排雷、文案合规审查、广告法平替改写"
+    },
+    "kol-feedback-mediator": {
+        "module": "5. 🛡️ 合规风控与复盘汇报 (Risk Guard & Executive Recap)",
+        "action": "审脚本 / 提修改",
+        "solve": "达人脚本审稿与高情商修改意见工场（平衡商业硬利益与博主创作自尊）",
+        "triggers": "给博主改脚本、审达人文案、提修改意见、KOL审稿、修改意见函"
+    },
+    "pr-crisis-responder": {
+        "module": "5. 🛡️ 合规风控与复盘汇报 (Risk Guard & Executive Recap)",
+        "action": "护声誉 / 灭公关火",
+        "solve": "品牌公关危机应对与舆情护盾（危机四级响应、情绪疏导与真诚致歉信）",
+        "triggers": "公关危机处理、危机公关声明、舆情应对、致歉声明撰写"
+    },
+    "campaign-recap-crafter": {
+        "module": "5. 🛡️ 合规风控与复盘汇报 (Risk Guard & Executive Recap)",
+        "action": "撰复盘 / 报战报",
+        "solve": "战役复盘与高管汇报战报发生器（一页纸高管决策看板 + 因果归因 + 避坑建议）",
+        "triggers": "战役结案、活动复盘、大促战报、向高管汇报营销成果、Campaign复盘"
+    }
+}
+
+
 def update_readme_matrix(skills_meta: list[dict], dry_run: bool = False) -> bool:
-    """动态更新 README.md 中的技能矩阵表格"""
+    """动态更新 README.md 中的技能矩阵表格（按 5 大业务模块任务直驱分层输出）"""
     if not README_PATH.is_file():
         return False
         
     content = read_text(README_PATH)
-    lines = [
-        "| 技能目录 | 技能定位与核心价值 | 适用场景与触发词 | 版本 | 状态 |",
-        "| :--- | :--- | :--- | :--- | :--- |"
-    ]
     
+    # 模块化归类
+    modules = {}
     for s in skills_meta:
         name = s["name"]
-        version = s.get("version", "v1.0.0")
-        desc = s.get("description", "品牌营销策略技能")
-        category = s.get("category", "营销策略")
+        meta_info = SKILL_ACTION_MAP.get(name, {
+            "module": "6. 📦 其他策略与实战技能",
+            "action": s.get("category", "营销策略"),
+            "solve": s.get("description", "品牌营销专业技能"),
+            "triggers": "详见技能内页说明"
+        })
+        mod_name = meta_info["module"]
+        if mod_name not in modules:
+            modules[mod_name] = []
+        modules[mod_name].append({
+            "name": name,
+            "action": meta_info["action"],
+            "solve": meta_info["solve"],
+            "triggers": meta_info["triggers"]
+        })
         
-        short_desc = desc.replace("\n", " ").strip()
-        if len(short_desc) > 130:
-            short_desc = short_desc[:127] + "..."
-            
-        link = f"[`skills/{name}`](skills/{name}/)"
-        line = f"| {link} | **{category}**<br/>{short_desc} | 详见技能定义说明 | `{version}` | ✅ 已就绪 |"
-        lines.append(line)
+    sections = []
+    for mod_name in sorted(modules.keys()):
+        sec_lines = [
+            f"### {mod_name}\n",
+            "| 技能目录 | 业务直驱 (动词+宾语) | 核心解决什么痛点 / 产出形态 | 代表性触发词 |",
+            "| :--- | :--- | :--- | :--- |"
+        ]
+        for item in modules[mod_name]:
+            link = f"[`skills/{item['name']}`](skills/{item['name']}/)"
+            sec_lines.append(f"| {link} | **{item['action']}** | {item['solve']} | {item['triggers']} |")
+        sections.append("\n".join(sec_lines))
         
-    new_table = "\n".join(lines)
+    new_matrix_text = "\n\n".join(sections)
     pattern = r"(## 📂 专区技能矩阵清单 \(Skills Matrix\)\s*\n\s*\n)(.*?)(?=\n---\n|\Z)"
     match = re.search(pattern, content, re.DOTALL)
     if match:
         header = match.group(1)
-        updated_content = content[:match.start()] + header + new_table + "\n" + content[match.end():]
+        updated_content = content[:match.start()] + header + new_matrix_text + "\n" + content[match.end():]
     else:
-        updated_content = content + "\n\n## 📂 专区技能矩阵清单 (Skills Matrix)\n\n" + new_table + "\n"
+        updated_content = content + "\n\n## 📂 专区技能矩阵清单 (Skills Matrix)\n\n" + new_matrix_text + "\n"
         
     if updated_content != content:
         if not dry_run:
