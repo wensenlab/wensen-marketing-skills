@@ -727,7 +727,7 @@ def cmd_discover():
 
 def main():
     parser = argparse.ArgumentParser(
-        description="WenSenLab · 营销与商业策略技能自动化备份与统一管理中枢",
+        description="WenSenLab · 营销与商业策略技能自动化备份与多 Agent 分发同步工具",
         formatter_class=argparse.RawDescriptionHelpFormatter
     )
     

@@ -112,7 +112,7 @@ git clone https://github.com/wensenlab/wensen-marketing-skills.git ~/wensen-mark
 
 ### 方式 2：通过 Skills Manager 统一纳管（`skills-manager-cli`）
 
-如果你使用 WenSenLab 的技能管理中枢，可直接通过 CLI 一键安装与分发：
+如果你在本地使用开源的 **Skills Manager**（`skills-manager-cli`）统一管理 Agent 技能，可直接通过 CLI 一键安装与分发：
 
 ```bash
 # 从 GitHub 仓库一键安装至本地中央技能库
