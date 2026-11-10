@@ -39,10 +39,10 @@
 
 | 技能目录 | 业务直驱 (动词+宾语) | 核心解决什么痛点 / 产出形态 | 代表性触发词 |
 | :--- | :--- | :--- | :--- |
-| [`skills/imc-campaign-architect`](skills/imc-campaign-architect/) | **排战役 / 搞 IMC** | 4A 级全案整合营销战役策划（全链路 AIPL + 节点推进排期 + 渠道预算） | 整合营销策划（IMC）、Campaign方案大纲、新品上市战役、大促排期 |
-| [`skills/creative-campaign-producer`](skills/creative-campaign-producer/) | **磨分镜 / 制大片** | 商业创意总监与广告/短视频脚本制片工场（含 AI 分镜生图提示词） | 商业广告脚本、TVC 分镜剧本、30-60秒爆款短视频、快闪装置策划 |
-| [`skills/pitch-deck-storyteller`](skills/pitch-deck-storyteller/) | **理 PPT / 写讲稿** | 4A 级商业比稿提案大纲与逐页讲稿架构（15-20 页骨架 + 客户提问防守） | 商业比稿提案大纲、PPT 逻辑架构、逐页口播讲稿、预判客户提问 |
 | [`skills/brand-pulse-workbench`](skills/brand-pulse-workbench/) | **跑比稿 / 搓看板** | 品牌比稿与策略洞察自动化加速器（单文件自适应 Generative UI 交互看板） | 品牌比稿、策略推演、比稿看板、BrandPulse 页面、交互式比稿画布 |
+| [`skills/creative-campaign-producer`](skills/creative-campaign-producer/) | **磨分镜 / 制大片** | 商业创意总监与广告/短视频脚本制片工场（含 AI 分镜生图提示词） | 商业广告脚本、TVC 分镜剧本、30-60秒爆款短视频、快闪装置策划 |
+| [`skills/imc-campaign-architect`](skills/imc-campaign-architect/) | **排战役 / 搞 IMC** | 4A 级全案整合营销战役策划（全链路 AIPL + 节点推进排期 + 渠道预算） | 整合营销策划（IMC）、Campaign方案大纲、新品上市战役、大促排期 |
+| [`skills/pitch-deck-storyteller`](skills/pitch-deck-storyteller/) | **理 PPT / 写讲稿** | 4A 级商业比稿提案大纲与逐页讲稿架构（15-20 页骨架 + 客户提问防守） | 商业比稿提案大纲、PPT 逻辑架构、逐页口播讲稿、预判客户提问 |
 | [`skills/brand-story-miner`](skills/brand-story-miner/) | **讲故事 / 挖叙事** | 品牌故事挖掘与深度叙事工场（社会学神话、创始人心理冲突与时代情绪） | 品牌故事、创始人故事、官网关于我们、品牌精神内核、品牌宣言 |
 | [`skills/brand-slogan-studio`](skills/brand-slogan-studio/) | **憋口号 / 定 Slogan** | 品牌超级口号与记忆钉发生器（音律学平仄对仗 + 五维抗遗忘压力测试） | 品牌口号、Slogan、广告语、超级记忆钉、品牌主张 |
 
@@ -50,27 +50,27 @@
 
 | 技能目录 | 业务直驱 (动词+宾语) | 核心解决什么痛点 / 产出形态 | 代表性触发词 |
 | :--- | :--- | :--- | :--- |
+| [`skills/event-speech-scripter`](skills/event-speech-scripter/) | **写主持 / 润致辞** | 商业活动主持串词与高管致辞润色（破冰开场金句 + 有格局领导发言） | 写主持词、活动串词、主持脚本、领导致辞、祝酒词、发布会开场 |
 | [`skills/co-branding-ip-strategist`](skills/co-branding-ip-strategist/) | **搞联名 / 挑 IP** | 跨界联名与品牌 IP 合作策划（文化资产匹配度打分与破圈合作方案） | 跨界联名、IP 合作策划、品牌联名筛选、联名方案大纲 |
 | [`skills/pop-up-stunt-producer`](skills/pop-up-stunt-producer/) | **办快闪 / 做大事件** | 社交破圈大事件与沉浸式快闪策划（空间体验设计与社交自发传播工程） | 线下快闪策划、公关大事件、快闪店方案、空间互动体验、社交打卡 |
 | [`skills/live-promo-showrunner`](skills/live-promo-showrunner/) | **冲直播 / 组货盘** | 电商大促与直播带货制片（货盘组合机制、直播节奏控场与转化心理学） | 电商大促直播、直播脚本编排、货盘机制设计、直播间促单策略 |
-| [`skills/event-speech-scripter`](skills/event-speech-scripter/) | **写主持 / 润致辞** | 商业活动主持串词与高管致辞润色（破冰开场金句 + 有格局领导发言） | 写主持词、活动串词、主持脚本、领导致辞、祝酒词、发布会开场 |
 
 ### 4. ✍️ 社媒抓手与爆款内容 (Social Content & Visuals)
 
 | 技能目录 | 业务直驱 (动词+宾语) | 核心解决什么痛点 / 产出形态 | 代表性触发词 |
 | :--- | :--- | :--- | :--- |
 | [`skills/creative-hook-generator`](skills/creative-hook-generator/) | **抓眼球 / 起标题** | 社媒爆点抓手与互动文案发生器（5 大破局视角立体发散，拒绝焦虑恐吓） | 起标题、爆款标题、社媒抓手（Hook）、开头 3 秒钩子、封面文案 |
-| [`skills/scene-selling-point-matrix`](skills/scene-selling-point-matrix/) | **切场景 / 写微文** | 多场景卖点穷举与生活切片文案机（8 大微情绪生活场景碰撞，击穿防御） | 场景卖点穷举、卖点生活化转译、小红书微场景文案、朋友圈产品文案 |
 | [`skills/social-card-maker`](skills/social-card-maker/) | **做卡片 / 调审美** | 营销人专属的高审美社媒卡片交互工场（Generative UI 单文件实时改字/导出） | 金句卡片、观点卡片、朋友圈/即刻分享图、可调样式卡片页 |
+| [`skills/scene-selling-point-matrix`](skills/scene-selling-point-matrix/) | **切场景 / 写微文** | 多场景卖点穷举与生活切片文案机（8 大微情绪生活场景碰撞，击穿防御） | 场景卖点穷举、卖点生活化转译、小红书微场景文案、朋友圈产品文案 |
 
 ### 5. 🛡️ 合规风控与复盘汇报 (Risk Guard & Executive Recap)
 
 | 技能目录 | 业务直驱 (动词+宾语) | 核心解决什么痛点 / 产出形态 | 代表性触发词 |
 | :--- | :--- | :--- | :--- |
 | [`skills/ad-law-compliance-guard`](skills/ad-law-compliance-guard/) | **排极限 / 换平替** | 新广告法极限词排雷与审美平替改写（标出风险依据 + 独家提供 3 套知性平替） | 广告法检查、违禁词检测、极限词排雷、文案合规审查、广告法平替改写 |
+| [`skills/campaign-recap-crafter`](skills/campaign-recap-crafter/) | **撰复盘 / 报战报** | 战役复盘与高管汇报战报发生器（一页纸高管决策看板 + 因果归因 + 避坑建议） | 战役结案、活动复盘、大促战报、向高管汇报营销成果、Campaign复盘 |
 | [`skills/kol-feedback-mediator`](skills/kol-feedback-mediator/) | **审脚本 / 提修改** | 达人脚本审稿与高情商修改意见工场（平衡商业硬利益与博主创作自尊） | 给博主改脚本、审达人文案、提修改意见、KOL审稿、修改意见函 |
 | [`skills/pr-crisis-responder`](skills/pr-crisis-responder/) | **护声誉 / 灭公关火** | 品牌公关危机应对与舆情护盾（危机四级响应、情绪疏导与真诚致歉信） | 公关危机处理、危机公关声明、舆情应对、致歉声明撰写 |
-| [`skills/campaign-recap-crafter`](skills/campaign-recap-crafter/) | **撰复盘 / 报战报** | 战役复盘与高管汇报战报发生器（一页纸高管决策看板 + 因果归因 + 避坑建议） | 战役结案、活动复盘、大促战报、向高管汇报营销成果、Campaign复盘 |
 
 ---
 
@@ -169,6 +169,6 @@ wensen-marketing-skills/
 
 本项目基于 [MIT License](LICENSE) 协议正式开源。
 
-* **工具与开源厂牌**：归属于试验工坊 **`WenSenLab`**（GitHub: [github.com/wensenlab](https://github.com/wensenlab)）。
+* **开源厂牌**：归属于 **`WenSenLab`**（WenSenLab · 文森策 出品，GitHub: [github.com/wensenlab](https://github.com/wensenlab)）。
 * **版权钢印**：**`WenSenLab_ ©文森策`** 版权所有。
 * 欢迎各位营销人、品牌策略人、创意文案与 AI 开发者 Star、Fork、提交 Issue 或发起 Pull Request，共同打造懂商业逻辑的中文开源 Agent Skills 生态！
